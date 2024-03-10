@@ -1,0 +1,7 @@
+header.header {
+  position: absolute;
+  top: 0;
+  width: calc(100% - 30rem);
+  padding: 1rem 5rem;
+  height: 6rem;
+}

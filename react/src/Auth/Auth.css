@@ -1,0 +1,51 @@
+.auth__main{
+  flex: 1;
+}
+
+.auth__main__form__title h1{
+  letter-spacing: .3rem;
+}
+
+.auth__main__form__title span{
+  font-weight: 100;
+  color: #c38484;
+}
+
+.auth__main__form{
+  width: 40rem;
+  margin: 18% auto 0;
+  border: 1px solid #eee;
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+.auth__main__form__body{
+  margin-top: 2rem;
+}
+
+.auth__main__form__body > .input:not(:last-child){
+  margin-bottom: 1.4rem;
+}
+
+.auth__main__form__body button{
+  margin-top: 1rem;
+  width: 100%;
+  padding: .9rem 1rem;
+  border-radius: 6px;
+}
+
+.auth__main__form__footer{
+  margin-top: 1rem;
+}
+
+.auth__main__form__footer p{
+  text-align: center;
+}
+
+.auth__back{
+  flex: 0 0 50rem;
+  height: calc(100vh - 4rem);
+  filter: brightness(.7);
+  margin: 2rem;
+  border-radius: 16px;
+}
