@@ -1,0 +1,53 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff9f;
+}
+
+.modal--closed {
+  display: none;
+}
+
+.modal__main {
+  width: 50%;
+  background-color: #fff;
+  margin: 8rem auto 0;
+  border-radius: 6px;
+  box-shadow: 0 0 5px #dbdbdb,
+    0 0 1px #000;
+    overflow: hidden;
+}
+
+.modal__main__header,
+.modal__main__body,
+.modal__main__footer {
+  padding: 1rem 1.4rem;
+}
+
+.modal__main__header{
+  background-color: #e9eef1;
+}
+
+.model__main__body__form {
+  flex: 1;
+}
+
+.modal__main__footer{
+  border-top: 1px solid #e9eef1;
+}
+
+.medicines__item .flex{
+  gap: 1rem;
+  align-items: center;
+}
+
+.medicines__item i{
+  flex: 0 0 1rem;
+}
+
+.medicines__item .input{
+  flex: 1;
+}

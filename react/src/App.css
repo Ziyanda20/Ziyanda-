@@ -122,6 +122,10 @@ img {
   color: #b6b6b6;
 }
 
+.container__main__pad{
+  padding: 0 5rem;
+}
+
 .grid {
   display: grid;
 }
@@ -233,6 +237,49 @@ textarea {
   overflow: auto;
 }
 
+.table {
+  width: 100%;
+  border: 1px solid #eee;
+  overflow: hidden;
+  border-spacing: 0;
+  border-radius: 6px;
+  /* margin: 2rem 16% 0; */
+}
+
+.table__image {
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 5px;
+}
+
+.table thead {
+  background-color: #fbfbfb;
+}
+
+.table th,
+.table td {
+  text-align: left;
+}
+
+.table th:last-child,
+.table td:last-child {
+  text-align: right;
+}
+
+.table th,
+.table td {
+  padding: 1rem 2rem;
+}
+
+.table td {
+  border-bottom: 1px solid #eee;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -242,6 +289,19 @@ li {
   list-style: none;
 }
 
+.hover:hover{
+  cursor: pointer;
+  color: var(--primary);
+}
+
+.hover-del {
+  cursor: pointer;
+  color: darkred;
+}
+
+.hover-del:hover {
+  color: #c80b0b;
+}
 
 .error {
   color: darkred;

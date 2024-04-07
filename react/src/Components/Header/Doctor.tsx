@@ -9,7 +9,7 @@ export default function DoctorHeader() {
     <header className="header flex flex--a-center flex--j-space-between">
       <div className="header__message">
         <p><b>Good day</b></p>
-        <p>Dr {user.fullname}</p>
+        <p>Dr {user.full_name}</p>
       </div>
       <div className="header__account">
         <p>Account</p>

@@ -1,16 +1,20 @@
 import { SQLifier, SQLDate } from "sqlifier"
 
-export default new (class Doctor extends SQLifier {
+export default new (class Patient extends SQLifier {
   constructor() {
     super();
 
-    this.schema('doctor', {
+    this.schema('patient', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
       full_name: { type: 'varchar', length: 30 },
-      email: { type: 'varchar', length: 50 },
+      id_number: { type: 'varchar', length: 13 },
       password: { type: 'varchar', length: 250 },
-      is_visible: { type: 'boolean', default: false },
+      is_deleted: { type: 'boolean', default: false },
       date_created: { type: 'datetime', default: SQLDate.now }
     })
+  }
+
+  removeOne(id) {
+    this.update({ id }, { is_deleted: true })
   }
 })

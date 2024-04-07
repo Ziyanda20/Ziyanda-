@@ -17,7 +17,7 @@ async function createDoctor(body: any): Promise<IResponse> {
     });
 
     const newUser = await Doctor.insert({
-      fullname: fullname,
+      full_name: fullname,
       email: email,
       password: await hasher.hash(password),
     });
