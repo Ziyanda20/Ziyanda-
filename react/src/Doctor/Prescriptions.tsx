@@ -41,7 +41,7 @@ export default function DoctorPrescriptions() {
   }
 
   async function removePrescription(prescription_id: string) {
-    const res = await postWithAuth('/prescriptions/remove/one', {
+    await postWithAuth('/prescriptions/remove/one', {
       prescription_id
     })
 

@@ -1,4 +1,4 @@
-import { getElementById, getElementsByClass } from "./dom";
+import { getElementById, get1ByClass } from "./dom";
 
 export const showDropdownMenu = () => {
   getElementById("dropdownmenu")?.classList.remove("hide");
@@ -6,7 +6,7 @@ export const showDropdownMenu = () => {
   const div = document.createElement("div");
   div.className = "overlay";
 
-  getElementsByClass("container__header")[0].appendChild(div);
+  get1ByClass("container__header")?.appendChild(div);
 
   div.addEventListener("click", () => {
     hideDropdownMenu();

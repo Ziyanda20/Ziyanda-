@@ -40,7 +40,7 @@ export default function DoctorPatients() {
   }
 
   async function removePatient(patient_id: string) {
-    const res = await postWithAuth('/patients/remove/one', {
+    await postWithAuth('/patients/remove/one', {
       patient_id
     });
 
