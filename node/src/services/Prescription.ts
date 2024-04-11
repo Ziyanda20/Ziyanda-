@@ -75,7 +75,7 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
           id: 'patient_id'
         },
         {
-          ref: 'diagnoses',
+          ref: 'diagnosis',
           id: 'diagnosis_id'
         }
       ]
@@ -98,7 +98,7 @@ async function getOneById(body: any, doctor): Promise<IResponse> {
           id: 'patient_id'
         },
         {
-          ref: 'diagnoses',
+          ref: 'diagnosis',
           id: 'diagnosis_id'
         }
       ]
