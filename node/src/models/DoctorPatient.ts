@@ -6,9 +6,9 @@ export default new (class DoctorPatient extends SQLifier {
 
     this.schema('doctor_patient', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      doctor_id: { type: 'int' },
-      patient_id: { type: 'int' },
-      is_visible: { type: 'boolean', default: false }
+      doctor_id: { type: 'int', ref: 'doctor' },
+      patient_id: { type: 'int', ref: 'patient' },
+      is_deleted: { type: 'boolean', default: false }
     })
   }
 })

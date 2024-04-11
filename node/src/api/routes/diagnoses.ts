@@ -1,7 +1,7 @@
 import { Application } from "express";
 
 import BaseController from "../controllers/base";
-import diagnosesServices from "../../services/Diagnoses";
+import diagnosesServices from "../../services/Diagnosis";
 
 export default (app: Application) => {
   app.post("/diagnoses/add", BaseController.wrapWithUser(diagnosesServices.createDiagnoses));

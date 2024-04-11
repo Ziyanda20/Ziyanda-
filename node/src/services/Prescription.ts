@@ -1,5 +1,5 @@
 import Prescription from "../models/Prescription";
-import Diagnoses from "../models/Diagnoses";
+import Diagnoses from "../models/Diagnosis";
 import Medicine from "../models/Medicine";
 import DosageTracker from "../models/DosageTracker";
 

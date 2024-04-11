@@ -4,11 +4,11 @@ export default new (class Diagnoses extends SQLifier {
   constructor() {
     super();
 
-    this.schema('diagnoses', {
+    this.schema('diagnosis', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
       name: { type: 'varchar', length: 100 },
-      patient_id: { type: 'int' },
-      doctor_id: { type: 'int' },
+      patient_id: { type: 'int', ref: 'patient' },
+      doctor_id: { type: 'int', ref: 'doctor' },
       is_deleted: { type: 'boolean', default: false },
       date_created: { type: 'datetime', default: SQLDate.now }
     })

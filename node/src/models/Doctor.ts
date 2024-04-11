@@ -9,7 +9,7 @@ export default new (class Doctor extends SQLifier {
       full_name: { type: 'varchar', length: 30 },
       email: { type: 'varchar', length: 50 },
       password: { type: 'varchar', length: 250 },
-      is_visible: { type: 'boolean', default: false },
+      is_deleted: { type: 'boolean', default: false },
       date_created: { type: 'datetime', default: SQLDate.now }
     })
   }

@@ -1,4 +1,4 @@
-import Diagnoses from "../models/Diagnoses";
+import Diagnoses from "../models/Diagnosis";
 
 import v from "../helpers/Validation";
 

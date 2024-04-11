@@ -6,9 +6,9 @@ export default new (class Prescription extends SQLifier {
 
     this.schema('prescription', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      patient_id: { type: 'int' },
-      doctor_id: { type: 'int' },
-      diagnosis_id: { type: 'int' },
+      patient_id: { type: 'int', ref: 'patient' },
+      doctor_id: { type: 'int', ref: 'doctor' },
+      diagnosis_id: { type: 'int', ref: 'diagnosis' },
       is_deleted: { type: 'boolean', default: false },
       date_created: { type: 'datetime', default: SQLDate.now }
     })
