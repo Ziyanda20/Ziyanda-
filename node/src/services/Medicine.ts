@@ -19,4 +19,19 @@ async function getAllByPrescription(body: any, doctor: any): Promise<IResponse> 
   return this;
 }
 
-export default { getAllByPrescription };
+async function getOneById(body: any): Promise<IResponse> {
+  try {
+    const medicine = await Medicine.findOne({
+      condition: { id: body.id }
+    })
+
+    this.medicine = medicine.toObject();
+
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
+
+export default { getAllByPrescription, getOneById };

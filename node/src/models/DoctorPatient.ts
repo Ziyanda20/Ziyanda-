@@ -1,6 +1,6 @@
 import { SQLifier } from "sqlifier"
 
-export default new (class DoctorPatient extends SQLifier {
+export default new (class _Model extends SQLifier {
   constructor() {
     super();
 

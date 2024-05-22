@@ -6,6 +6,7 @@ import patientRoutes from "./patient";
 import diagnosesRoutes from "./diagnoses";
 import prescriptionRoutes from "./prescription";
 import medicineRoutes from "./medicine";
+import collectionRoutes from "./collection";
 
 export default (app: Application): void => {
   userRoutes(app);
@@ -14,4 +15,5 @@ export default (app: Application): void => {
   diagnosesRoutes(app);
   prescriptionRoutes(app);
   medicineRoutes(app);
+  collectionRoutes(app);
 };

@@ -4,17 +4,12 @@ export default new (class _Model extends SQLifier {
   constructor() {
     super();
 
-    this.schema('diagnosis', {
+    this.schema('collection', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      name: { type: 'varchar', length: 100 },
+      diagnosis_id: { type: 'int', ref: 'diagnosis' },
       patient_id: { type: 'int', ref: 'patient' },
       doctor_id: { type: 'int', ref: 'doctor' },
-      is_deleted: { type: 'boolean', default: false },
-      date_created: { type: 'datetime', default: SQLDate.now }
+      status: { type: 'varchar', length: 100 }
     })
-  }
-
-  removeOne(id) {
-    this.update({ id }, { is_deleted: true })
   }
 })

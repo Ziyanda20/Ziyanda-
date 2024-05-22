@@ -1,6 +1,6 @@
 import { SQLifier, SQLDate } from "sqlifier"
 
-export default new (class Medicine extends SQLifier {
+export default new (class _Model extends SQLifier {
   constructor() {
     super();
 

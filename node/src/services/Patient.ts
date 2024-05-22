@@ -4,6 +4,8 @@ import DoctorPatient from "../models/DoctorPatient";
 import v from "../helpers/Validation";
 import hasher from "../helpers/Hasher";
 
+import { removePassword, saveSession } from "./User";
+
 import { IAny, IResponse } from "../interfaces";
 
 async function createPatient(body: any, doctor): Promise<IResponse> {
@@ -67,4 +69,22 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
 }
 
 
-export default { removePatient, createPatient, getAllByDoctor };
+async function authPatient(body: any): Promise<IResponse> {
+  try {
+    const patient = await Patient.findOne({
+      condition: { id_number: body.idNumber }
+    })
+
+    if (!patient || (patient && !(await hasher.isSame(patient.password, body.password))))
+      throw "ID Number or password is incorrect";
+
+    saveSession.call(this, removePassword(patient.toObject()));
+
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
+
+export default { authPatient, removePatient, createPatient, getAllByDoctor };

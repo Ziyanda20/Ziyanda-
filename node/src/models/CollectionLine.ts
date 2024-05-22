@@ -4,11 +4,10 @@ export default new (class _Model extends SQLifier {
   constructor() {
     super();
 
-    this.schema('dosage_tracker', {
+    this.schema('collection_line', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      prescription_id: { type: 'int', ref: 'prescription' },
-      medicine_id: { type: 'int', ref: 'medicine' },
-      is_taken: { type: 'boolean', default: false }
+      collection_id: { type: 'int', ref: 'collection' },
+      medicine_id: { type: 'int', ref: 'medicine' }
     })
   }
 })

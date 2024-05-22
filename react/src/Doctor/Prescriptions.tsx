@@ -48,6 +48,14 @@ export default function DoctorPrescriptions() {
     setPrescriptions(await getPrescriptions())
   }
 
+  async function makeReady(prescriptionId: string) {
+    await postWithAuth('/prescriptions/make-ready', {
+      prescriptionId
+    })
+
+    setPrescriptions(await getPrescriptions())
+  }
+
   return (
     <DoctorMain page="prescriptions">
       <div className="container__main__title">
@@ -76,7 +84,15 @@ export default function DoctorPrescriptions() {
                   <td>{prescription.name}</td>
                   <td><Link to={`/doctor/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
                   <td>{formatTime(new Date(prescription.date_created))}</td>
-                  <td className="hover-del" onClick={() => removePrescription(prescription.id)}>Remove</td>
+                  <td>
+                    <span className="hover-del" onClick={() => removePrescription(prescription.id)}>Remove</span>
+                    <span style={{ display: 'inline-block', margin: '0 1rem' }}>|</span>
+                    {
+                      !prescription.is_ready ?
+                        (<span onClick={() => makeReady(prescription.id)}>{prescription.collection_type == 'delivery' ? 'Dispatch delivery' : 'Request collection' }</span>) :
+                        (<span>{prescription.status}</span>)
+                    }
+                  </td>
                 </tr>
               ))
             }
