@@ -92,7 +92,7 @@ export default function DoctorPrescriptions() {
                     <span style={{ display: 'inline-block', margin: '0 1rem' }}>|</span>
                     {
                       !prescription.is_ready ?
-                        (<span onClick={() => makeReady(prescription.id)}>{prescription.collection_type == 'delivery' ? 'Dispatch delivery' : 'Request collection' }</span>) :
+                        (<span className="hover" onClick={() => makeReady(prescription.id)}>{prescription.collection_type == 'delivery' ? 'Dispatch delivery' : 'Request collection' }</span>) :
                         (<span>{prescription.status}</span>)
                     }
                   </td>

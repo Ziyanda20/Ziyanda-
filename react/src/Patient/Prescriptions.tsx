@@ -56,9 +56,12 @@ export default function DoctorPrescriptions() {
                   <td>{formatTime(new Date(prescription.date_created))}</td>
                   <td>
                     {
-                      prescription.collection_type == 'delivery' ?
-                        ( <span onClick={() => switchCollection('collection', prescription.id)}>Switch to collection</span> ) :
-                        (<span onClick={() => switchCollection('delivery', prescription.id)}>Switch to delivery</span>)
+                      !prescription.is_ready ? (
+                        prescription.collection_type == 'delivery' ?
+                          ( <span className="hover" onClick={() => switchCollection('collection', prescription.id)}>Switch to collection</span> ) :
+                          (<span className="hover" onClick={() => switchCollection('delivery', prescription.id)}>Switch to delivery</span>)
+                        ) : 
+                        (prescription.status)
                     }
                   </td>
                 </tr>

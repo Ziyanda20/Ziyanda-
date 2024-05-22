@@ -14,8 +14,13 @@ async function createPatient(body: any, doctor): Promise<IResponse> {
 
     v.validate({
       'Full name': { value: name, min: 5, max: 50 },
-      'ID': { value: id, min: 13, max: 13 },
+      'ID': { value: id },
     });
+
+    if (id.length != 13) throw 'ID Number must be 13 characters long';
+    if (!(/^-?\d+$/.test(id))) throw 'ID Number must be all numbers'
+
+    if ((await Patient.findOne({ condition: { id_number: id } }))) throw 'Patient with same ID Number exists';
 
     const patient = await Patient.insert({
       full_name: name,
@@ -71,12 +76,20 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
 
 async function authPatient(body: any): Promise<IResponse> {
   try {
+    v.validate({
+      'ID Number': { value: body.idNumber },
+      'password': { value: body.password, min: 8, max: 30 },
+    });
+
+    if (body.idNumber.length != 13) throw 'ID Number must be 13 characters long';
+    if (!(/^-?\d+$/.test(body.idNumber))) throw 'ID Number must be all numbers'
+
     const patient = await Patient.findOne({
       condition: { id_number: body.idNumber }
     })
 
     if (!patient)
-      throw "Email address is incorrect";
+      throw "ID Number is incorrect";
 
     if (!(await hasher.isSame(patient.password, body.password)))
       throw "Password is incorrect";

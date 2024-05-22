@@ -35,6 +35,8 @@ async function createPrescription(body: any, doctor: any): Promise<IResponse> {
       _v[`Dosage ${index + 1}`] = { value: dosage, min: 5, max: 30 }
       _v[`Days ${index + 1}`] = { value: days, min: 1, max: 3 }
 
+      if (!(/^-?\d+$/.test(days))) throw `Days ${index + 1} must be all numbers under 1000`
+
       v.validate(_v);
     }
 

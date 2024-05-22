@@ -18,9 +18,9 @@ export default function _ () {
   }, [])
 
   return (
-    <PatientMain page="collections">
+    <PatientMain page="deliveries-collections">
       <div className="container__main__title">
-        <h4><i className="fa-solid fa-truck-fast margin--right-1"></i><span>Collections &amp; Collections</span></h4>
+        <h4><i className="fa-solid fa-truck-fast margin--right-1"></i><span>Deliveries &amp; Collections</span></h4>
         <p>Keep track of your collections from here</p>
       </div>
 
