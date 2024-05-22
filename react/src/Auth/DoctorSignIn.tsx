@@ -36,7 +36,7 @@ export default function DoctorSignIn() {
         <form className="auth__main__form" onSubmit={loginDoctor}>
           <div className="auth__main__form__title">
             <h1><span>MY</span>PHARMACIST</h1>
-            <p>CARE FOR ALL</p>
+            <p>Doctor sign in</p>
           </div>
           <div className="auth__main__form__body">
             <p className="error hide" id="auth-error">Erro</p>

@@ -38,7 +38,7 @@ export default function DoctorSignUp() {
         <form className="auth__main__form" onSubmit={registerDoctor}>
           <div className="auth__main__form__title">
             <h1><span>MY</span>PHARMACIST</h1>
-            <p>CARE FOR ALL</p>
+            <p>Doctor sign up</p>
           </div>
           <div className="auth__main__form__body">
             <p className="error hide" id="auth-error">Erro</p>

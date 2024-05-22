@@ -75,8 +75,11 @@ async function authPatient(body: any): Promise<IResponse> {
       condition: { id_number: body.idNumber }
     })
 
-    if (!patient || (patient && !(await hasher.isSame(patient.password, body.password))))
-      throw "ID Number or password is incorrect";
+    if (!patient)
+      throw "Email address is incorrect";
+
+    if (!(await hasher.isSame(patient.password, body.password)))
+      throw "Password is incorrect";
 
     saveSession.call(this, removePassword(patient.toObject()));
 
