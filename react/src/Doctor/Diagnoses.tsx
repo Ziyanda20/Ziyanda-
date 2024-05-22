@@ -7,6 +7,7 @@ import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
 import DoctorMain from "./Main"
 import Diagnoses from "../Components/Modal/Diagnoses";
+import { showError } from "../helpers/error";
 
 export default function DoctorDiagnoses() {
   const [patients, setPatients] = useState([]);
@@ -22,14 +23,21 @@ export default function DoctorDiagnoses() {
   async function addDiagnoses (e: any) {
     e.preventDefault();
 
-    await postWithAuth('/diagnoses/add', {
+    const res = await postWithAuth('/diagnoses/add', {
       name: getValueById('diagnoses-name'),
       patient_id: getValueById('diagnoses-patient')
     })
 
     setDiagnoses(await getDiagnoses())
 
-    closeModal('new-diagnoses')
+
+    if (res.successful) {
+      closeModal('new-diagnoses')
+
+      return;
+    }
+
+    showError('diagnosis', res.error);
   }
 
   async function removeDiagnoses(diagnoses_id: string) {

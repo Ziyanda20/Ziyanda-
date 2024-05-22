@@ -6,6 +6,7 @@ import { closeModal, openModal } from "../helpers/modals";
 import DoctorMain from "./Main"
 import { formatTime } from "../helpers/date";
 import { Link } from "react-router-dom";
+import { showError } from "../helpers/error";
 
 export async function getPrescriptions() {
   const res = await postWithAuth('/prescriptions/get/by/doctor', {});
@@ -38,6 +39,8 @@ export default function DoctorPrescriptions() {
 
       return;
     };
+
+    showError('prescription', res.error)
   }
 
   async function removePrescription(prescription_id: string) {

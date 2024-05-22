@@ -10,6 +10,7 @@ export default (props: any) => {
           <h4>Patient</h4>
         </div>
         <div className="modal__main__body" style={{ margin: '1rem 0' }}>
+          <p className="error hide" id="patient-error"><b>Sorry</b></p>
           <div className="input flex flex--a-center">
             <label htmlFor="patient-name" className="margin--right-1"><b>Patient Full Name</b></label>
             <input type="text" id="patient-name" placeholder="Patient full name" />

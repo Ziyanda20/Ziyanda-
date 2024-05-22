@@ -13,6 +13,8 @@ async function createPrescription(body: any, doctor: any): Promise<IResponse> {
   try {
     const { name, diagnosis_id, medicine_count } = body;
 
+    if (diagnosis_id == 'select') throw "Please select diagnosis";
+
     const diagnosis = await Diagnoses.findOne({
       condition: {
         id: diagnosis_id,
@@ -20,6 +22,21 @@ async function createPrescription(body: any, doctor: any): Promise<IResponse> {
     });
 
     if (!diagnosis) throw "Could not find diagnosis";
+
+    for (let index = 0; index < medicine_count; index++) {
+      let name = body[`name_${index}`];
+      let dosage = body[`dosage_${index}`];
+      let days = body[`days_${index}`];
+
+      const _v = {
+      }
+
+      _v[`Medicine ${index + 1}`] = { value: name, min: 3, max: 30 }
+      _v[`Dosage ${index + 1}`] = { value: dosage, min: 5, max: 30 }
+      _v[`Days ${index + 1}`] = { value: days, min: 1, max: 3 }
+
+      v.validate(_v);
+    }
 
     const prescription = await Prescription.insert({
       diagnosis_id,

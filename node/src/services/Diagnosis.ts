@@ -8,6 +8,8 @@ async function createDiagnoses(body: any, doctor: any): Promise<IResponse> {
   try {
     const { name, patient_id } = body;
 
+    if (patient_id == 'select') throw 'Please select patient';
+
     v.validate({
       'Diagnoses': { value: name, min: 5, max: 100 },
     });

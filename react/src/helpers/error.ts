@@ -5,7 +5,7 @@ export const showError = (id: string, err: string) => {
 
   if (!parent) return;
 
-  parent.innerHTML = `<b>Oops.</b> ${err}`
+  parent.innerHTML = `<b>Sorry.</b> ${err}`
   
   parent.classList.remove('hide')
 }

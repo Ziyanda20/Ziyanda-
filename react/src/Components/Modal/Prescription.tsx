@@ -68,6 +68,8 @@ export default (props: any) => {
           <h4>Prescription</h4>
         </div>
         <div className="modal__main__body" style={{ margin: '1rem 0' }}>
+          <p className="error hide" id="prescription-error"><b>Sorry</b></p>
+
           <div className="input">
             <label htmlFor="patient-name" className="margin--right-1"><b>Diagnosis And Patient</b></label>
             <select id="prescription-diagnosis">

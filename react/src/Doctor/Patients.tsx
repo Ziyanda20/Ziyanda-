@@ -8,6 +8,7 @@ import { postWithAuth } from "../helpers/http";
 import { closeModal, openModal } from "../helpers/modals";
 import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
+import { showError } from "../helpers/error";
 
 export async function getPatients() {
   const res = await postWithAuth('/patients/get/by/doctor', {});
@@ -35,8 +36,12 @@ export default function DoctorPatients() {
     if (res.successful) {
       setPatients(await getPatients())
 
-      closeModal('new-patient')
+      closeModal('new-patient');
+
+      return;
     }
+
+    showError('patient', res.error)
   }
 
   async function removePatient(patient_id: string) {
