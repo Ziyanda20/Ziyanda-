@@ -3,8 +3,22 @@ import { postWithAuth } from "../helpers/http";
 import PatientMain from "./Main"
 import { getValueById } from "../helpers/dom";
 
+export async function getAddress() {
+  const res = await postWithAuth('/patients/get/address', {});
+
+  return res.address;
+}
+
 export default function _() {
-  async function setAddress(e: any) {
+  const [address, setAddress] = useState(null) as any;
+
+  useEffect(() => {
+    (async () => {
+      setAddress(await getAddress())
+    })();
+  }, [])
+
+  async function updateAddress(e: any) {
     e.preventDefault();
 
     await postWithAuth('/patients/update/address', {
@@ -22,16 +36,16 @@ export default function _() {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
-        <form onSubmit={setAddress}>
+        <form onSubmit={updateAddress}>
           <div className="flex address">
             <div className="input">
-              <input type="text" id="line-1" placeholder="Street" />
+              <input type="text" id="line-1" defaultValue={address?.line_1} placeholder="Street" />
             </div>
             <div className="input">
-              <input type="text" id="line-2" placeholder="Line 2" />
+              <input type="text" id="line-2" defaultValue={address?.line_2} placeholder="Line 2" />
             </div>
             <div className="input">
-              <input type="text" id="province" placeholder="Province" />
+              <input type="text" id="province" defaultValue={address?.province} placeholder="Province" />
             </div>
           </div>
           

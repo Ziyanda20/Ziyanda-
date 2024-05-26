@@ -34,5 +34,19 @@ async function createOrUpdate(body: any, patient: any): Promise<IResponse> {
   return this;
 }
 
+async function getByPatient(body: any, patient: any): Promise<IResponse> {
+  try {
+    const address = await Address.findOne({
+      condition: { patient_id: patient.id },
+    });
 
-export default { createOrUpdate };
+    this.address = !address ? null : address.toObject();
+
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
+
+export default { getByPatient, createOrUpdate };
