@@ -42,6 +42,8 @@ export default function PatientPrescriptionMedicines() {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
+        <Link to={`/patient/prescriptions`}><h2 style={{ marginBottom: '1rem', fontSize: '1.6rem' }}>Go back</h2></Link>
+
         <table className="table">
           <thead>
             <tr>

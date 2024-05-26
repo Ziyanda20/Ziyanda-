@@ -3,6 +3,7 @@ import DoctorMain from "./Main"
 
 import { postWithAuth } from "../helpers/http";
 import { getQuery } from "../helpers/URL";
+import { Link } from "react-router-dom";
 
 
 export default function DoctorPrescriptionMedicines() {
@@ -41,6 +42,8 @@ export default function DoctorPrescriptionMedicines() {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
+        <Link to={`/doctor/prescriptions`}><h2 style={{ marginBottom: '1rem', fontSize: '1.6rem' }}>Go back</h2></Link>
+
         <table className="table">
           <thead>
             <tr>

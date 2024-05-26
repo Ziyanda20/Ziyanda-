@@ -1,6 +1,7 @@
 import Diagnoses from "../models/Diagnosis";
 
 import v from "../helpers/Validation";
+import { getDayDifference } from "../helpers/Datetime";
 
 import { IAny, IResponse } from "../interfaces";
 
@@ -13,6 +14,12 @@ async function createDiagnoses(body: any, doctor: any): Promise<IResponse> {
     v.validate({
       'Diagnoses': { value: name, min: 5, max: 100 },
     });
+
+    let lastDiagnosis = await Diagnoses.getLastByPatient(patient_id);
+
+    if (lastDiagnosis && getDayDifference(lastDiagnosis.date_created) < 30) {
+      throw 'Patient was recently diagnosed';
+    }
 
     const diagnose = await Diagnoses.insert({
       name,

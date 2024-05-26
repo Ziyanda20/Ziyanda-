@@ -4,12 +4,12 @@ export default new (class _Model extends SQLifier {
   constructor() {
     super();
 
-    this.schema('collection', {
+    this.schema('address', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      diagnosis_id: { type: 'int', ref: 'diagnosis' },
       patient_id: { type: 'int', ref: 'patient' },
-      doctor_id: { type: 'int', ref: 'doctor' },
-      status: { type: 'varchar', length: 100 }
+      line_1: { type: 'varchar', length: 30 },
+      line_2: { type: 'varchar', length: 30 },
+      province: { type: 'varchar', length: 30 }
     })
   }
 })

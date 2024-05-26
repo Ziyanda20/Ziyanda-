@@ -1,10 +1,10 @@
-import Collection from "../models/Collection";
+import Delivery from "../models/Delivery";
 
 import { IAny, IResponse } from "../interfaces";
 
 async function getByDoctor(body: any, doctor: any): Promise<IResponse> {
   try {
-    const collections = await Collection.find({
+    const deliveries = await Delivery.find({
       condition: { doctor_id: doctor.id },
       join: [
         {
@@ -18,7 +18,7 @@ async function getByDoctor(body: any, doctor: any): Promise<IResponse> {
       ],
     });
 
-    this.collections = collections;
+    this.deliveries = deliveries;
 
     this.successful = true;
   } catch (error) {
@@ -29,7 +29,7 @@ async function getByDoctor(body: any, doctor: any): Promise<IResponse> {
 
 async function getByPatient(body: any, patient: any): Promise<IResponse> {
   try {
-    const collections = await Collection.find({
+    const deliveries = await Delivery.find({
       condition: { patient_id: patient.id },
       join: [
         {
@@ -43,7 +43,7 @@ async function getByPatient(body: any, patient: any): Promise<IResponse> {
       ],
     });
 
-    this.collections = collections;
+    this.deliveries = deliveries;
 
     this.successful = true;
   } catch (error) {

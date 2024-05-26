@@ -12,5 +12,5 @@ export default (app: Application) => {
   app.post("/prescriptions/get/trackers", BaseController.wrapWithUser(prescriptionServices.getTrackerItems));
   app.post("/prescriptions/trackers/take-pill", BaseController.wrap(prescriptionServices.take));
   app.post("/prescriptions/make-ready", BaseController.wrapWithUser(prescriptionServices.makeReady));
-  app.post("/prescription/switch/collection", BaseController.wrap(prescriptionServices.switchCollection));
+  app.post("/prescription/add/delivery-address", BaseController.wrapWithUser(prescriptionServices.assignAddress));
 };

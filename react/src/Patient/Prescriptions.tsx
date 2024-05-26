@@ -19,10 +19,9 @@ export default function DoctorPrescriptions() {
     })();
   }, [])
 
-  async function switchCollection(collection_type: string, prescription_id: string) {
-    await postWithAuth('/prescription/switch/collection', {
-      collection_type,
-      prescription_id
+  async function setAddress(prescriptionId: string) {
+    await postWithAuth('/prescription/add/delivery-address', {
+      prescriptionId
     });
 
     setPrescriptions(await getPrescriptions())
@@ -42,8 +41,8 @@ export default function DoctorPrescriptions() {
               <th>Doctor name</th>
               <th>Diagnosis</th>
               <th>Medicines</th>
+              <th>Delivery address</th>
               <th>Prescribed on</th>
-              <th>Collection type</th>
             </tr>
           </thead>
           <tbody>
@@ -52,18 +51,12 @@ export default function DoctorPrescriptions() {
                 <tr key={prescription.id}>
                   <td>{prescription.full_name}</td>
                   <td>{prescription.name}</td>
-                  <td><Link to={`/patient/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
-                  <td>{formatTime(new Date(prescription.date_created))}</td>
+                  <td className="hover"><Link to={`/patient/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
                   <td>
-                    {
-                      !prescription.is_ready ? (
-                        prescription.collection_type == 'delivery' ?
-                          ( <span className="hover" onClick={() => switchCollection('collection', prescription.id)}>Switch to collection</span> ) :
-                          (<span className="hover" onClick={() => switchCollection('delivery', prescription.id)}>Switch to delivery</span>)
-                        ) : 
-                        (prescription.status)
-                    }
+                    {prescription.address_id ? (<span>{prescription.line_1}, {prescription.line_2}, {prescription.province}</span>) : <span onClick={() => setAddress(prescription.id)} className="hover">Use default</span>}
+                    
                   </td>
+                  <td>{formatTime(new Date(prescription.date_created))}</td>
                 </tr>
               ))
             }

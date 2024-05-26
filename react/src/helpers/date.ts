@@ -58,6 +58,13 @@ export const isPastDate = (date: Date) => {
   return now > date.getTime()
 }
 
+export const isToday = (date: Date) => {
+  const now = new Date();
+
+  // Calculate the difference in milliseconds
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` == `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
+}
+
 export default (date: Date): string => {
   const day = date.getDate(),
     month = getMonths()[date.getMonth()],

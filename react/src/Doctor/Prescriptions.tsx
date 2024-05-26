@@ -71,7 +71,7 @@ export default function DoctorPrescriptions() {
           <thead>
             <tr>
               <th>Patient name</th>
-              <th>Patient ID</th>
+              <th>Delivery address</th>
               <th>Diagnosis</th>
               <th>Medicines</th>
               <th>Prescribed on</th>
@@ -83,16 +83,16 @@ export default function DoctorPrescriptions() {
               prescriptions?.map((prescription: any) => (
                 <tr key={prescription.id}>
                   <td>{prescription.full_name}</td>
-                  <td>{prescription.id_number}</td>
+                  <td>{!prescription.address_id ? (<span>No address</span>) : <span>{prescription.line_1}, {prescription.line_2}, {prescription.province}</span>}</td>
                   <td>{prescription.name}</td>
-                  <td><Link to={`/doctor/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
+                  <td className="hover"><Link to={`/doctor/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
                   <td>{formatTime(new Date(prescription.date_created))}</td>
                   <td>
                     <span className="hover-del" onClick={() => removePrescription(prescription.id)}>Remove</span>
                     <span style={{ display: 'inline-block', margin: '0 1rem' }}>|</span>
                     {
                       !prescription.is_ready ?
-                        (<span className="hover" onClick={() => makeReady(prescription.id)}>{prescription.collection_type == 'delivery' ? 'Dispatch delivery' : 'Request collection' }</span>) :
+                        (<span className="hover" onClick={() => makeReady(prescription.id)}>Dispatch delivery</span>) :
                         (<span>{prescription.status}</span>)
                     }
                   </td>

@@ -285,6 +285,18 @@ a {
   text-decoration: none;
 }
 
+.address{
+  flex-direction: column;
+}
+
+.address .input{
+  width: 40rem;
+}
+
+.address .input:not(:last-child){
+  margin-bottom: 1rem;
+}
+
 li {
   list-style: none;
 }

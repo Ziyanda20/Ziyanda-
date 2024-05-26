@@ -2,8 +2,9 @@ import Prescription from "../models/Prescription";
 import Diagnoses from "../models/Diagnosis";
 import Medicine from "../models/Medicine";
 import DosageTracker from "../models/DosageTracker";
-import Collection from "../models/Collection";
-import CollectionLines from "../models/CollectionLine";
+import Delivery from "../models/Delivery";
+import Address from "../models/Address";
+import DeliveryLines from "../models/DeliveryLine";
 import { getDayDifference } from "../helpers/Datetime";
 
 import v from "../helpers/Validation";
@@ -77,13 +78,13 @@ async function createPrescription(body: any, doctor: any): Promise<IResponse> {
       let varDate = new Date(`${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()} 23:59`);
 
       for (let day = 0; day < parseInt(days); day++) {
-        varDate.setDate(varDate.getDate() + 1);
-
         await DosageTracker.insert({
           prescription_id: prescription.id,
           medicine_id: med.id,
           take_by: varDate
         });
+
+        varDate.setDate(varDate.getDate() + 1);
       }
     }
 
@@ -123,6 +124,19 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
       ],
     });
 
+    for (let i = 0; i < this.prescriptions.length; i++) {
+      const prescription = this.prescriptions[i];
+
+      if (!prescription.address_id) continue;
+
+      const _address = await Address.findOne({ condition: { id: prescription.address_id } });
+
+      prescription.line_1 = _address.line_1;
+      prescription.line_2 = _address.line_2;
+      prescription.province = _address.province;
+    }
+
+
     this.successful = true;
   } catch (error) {
     throw error;
@@ -142,9 +156,21 @@ async function getAllByPatient(body: any, patient): Promise<IResponse> {
         {
           ref: "diagnosis",
           id: "diagnosis_id",
-        },
+        }
       ],
     });
+
+    for (let i = 0; i < this.prescriptions.length; i++) {
+      const prescription = this.prescriptions[i];
+
+      if (!prescription.address_id) continue;
+
+      const _address = await Address.findOne({ condition: { id: prescription.address_id } });
+
+      prescription.line_1 = _address.line_1;
+      prescription.line_2 = _address.line_2;
+      prescription.province = _address.province;
+    }
 
     this.successful = true;
   } catch (error) {
@@ -235,9 +261,9 @@ async function makeReady(body, doctor) {
     if (prescription.is_ready) return this;
 
     prescription.is_ready = true;
-    prescription.status = prescription.collection_type == 'delivery' ? 'Dispatched for delivery' : 'Ready for collection'
+    prescription.status = 'Dispatched for delivery'
 
-    const collection = await Collection.insert({
+    const delivery = await Delivery.insert({
       doctor_id: doctor.id,
       diagnosis_id: prescription.diagnosis_id,
       patient_id: prescription.patient_id,
@@ -251,8 +277,8 @@ async function makeReady(body, doctor) {
     });
 
     for (let index = 0; index < medicine_lines.length; index++) {
-      await CollectionLines.insert({
-        collection_id: collection.id,
+      await DeliveryLines.insert({
+        delivery_id: delivery.id,
         Medicine_id: medicine_lines[index].id,
       });
     }
@@ -264,25 +290,31 @@ async function makeReady(body, doctor) {
   return this;
 }
 
-async function switchCollection (body) {
+async function assignAddress (body, patient) {
   try {
-    const {prescription_id, collection_type} = body;
+    const { prescriptionId } = body;
+
+    const address = await Address.findOne({ condition: { patient_id: patient.id } })
+
+    if (!address) return this;
 
     const prescription = await Prescription.findOne({
-      condition: { id: prescription_id },
+      condition: { id: prescriptionId },
     });
 
-    prescription.collection_type = collection_type;
+    prescription.address_id = address.id;
 
     prescription.save();
 
-  } catch (e) { throw e; }
-
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
   return this;
 }
 
 export default {
-  switchCollection,
+  assignAddress,
   makeReady,
   getTrackerItems,
   take,

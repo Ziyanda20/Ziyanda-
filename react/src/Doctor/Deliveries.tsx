@@ -2,26 +2,26 @@ import { useEffect, useState } from "react";
 import { postWithAuth } from "../helpers/http";
 import DoctorMain from "./Main"
 
-export async function getCollections() {
-  const res = await postWithAuth('/collections/get/by/doctor', {});
+export async function getDeliveries() {
+  const res = await postWithAuth('/deliveries/get/by/doctor', {});
 
-  return res.collections;
+  return res.deliveries;
 }
 
 export default function _ () {
-  const [collections, setCollections] = useState([]);
+  const [deliveries, setDeliveries] = useState([]);
 
   useEffect(() => {
     (async () => {
-      setCollections(await getCollections())
+      setDeliveries(await getDeliveries())
     })();
   }, [])
 
   return (
-    <DoctorMain page="deliveries-collections">
+    <DoctorMain page="deliveries">
       <div className="container__main__title">
-        <h4><i className="fa-solid fa-truck-fast margin--right-1"></i><span>Deliveries &amp; Collections</span></h4>
-        <p>See your patients' collections from here</p>
+        <h4><i className="fa-solid fa-truck-fast margin--right-1"></i><span>Deliveries</span></h4>
+        <p>See your patients' deliveries from here</p>
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
@@ -35,11 +35,11 @@ export default function _ () {
           </thead>
           <tbody>
             {
-              collections?.map((collection: any) => (
-                <tr key={collection.id}>
-                  <td>{collection.full_name}</td>
-                  <td>{collection.name}</td>
-                  <td>{collection.status}</td>
+              deliveries?.map((delivery: any) => (
+                <tr key={delivery.id}>
+                  <td>{delivery.full_name}</td>
+                  <td>{delivery.name}</td>
+                  <td>{delivery.status}</td>
                 </tr>
               ))
             }
