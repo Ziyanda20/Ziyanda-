@@ -6,10 +6,10 @@ export default new (class _Model extends SQLifier {
 
     this.schema('prescription', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      patient_id: { type: 'int', ref: 'patient' },
-      doctor_id: { type: 'int', ref: 'doctor' },
+      patient_id: { type: 'int'  },
+      doctor_id: { type: 'int' },
       address_id: { type: 'int'  },
-      diagnosis_id: { type: 'int', ref: 'diagnosis' },
+      diagnosis_id: { type: 'int' },
       is_deleted: { type: 'boolean', default: false },
       is_ready: { type: 'boolean', default: false },
       status: { type: 'varchar', length: 30 },
