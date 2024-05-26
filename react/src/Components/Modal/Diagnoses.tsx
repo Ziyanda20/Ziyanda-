@@ -1,10 +1,11 @@
+import { getQuery } from "../../helpers/URL"
 import { closeModal } from "../../helpers/modals"
 
 import "./Modal.css"
 
 export default (props: any) => {
   return (
-    <div className="modal modal--closed" id="new-diagnoses-modal">
+    <div className={`modal ${!(getQuery('patient')) && 'modal--closed'}`} id="new-diagnoses-modal">
       <form className="modal__main" onSubmit={props.addDiagnoses}>
         <div className="modal__main__header">
           <h4>Diagnosis</h4>
@@ -21,9 +22,11 @@ export default (props: any) => {
             <label htmlFor="diagnoses-patient" style={{ width: '15rem' }} className="margin--right-1"><b>Patient</b></label>
 
             <select id="diagnoses-patient">
-              <option value="select" key={Math.random()} selected>-- Select --</option>
+              <option value="select" key={Math.random()}>-- Select --</option>
 
-              {props.patients?.map((patient: any) => (<option key={patient.id} value={patient.id}>{patient.full_name}</option>))}
+              {props.patients?.map((patient: any) => (
+                <option key={patient.id} value={patient.id} selected={patient.id == getQuery('patient')}>{patient.full_name}</option>
+              ))}
             </select>
           </div>
         </div>

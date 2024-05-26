@@ -47,6 +47,8 @@ export default function PatientPrescriptionMedicines() {
             <tr>
               <th>Medicine</th>
               <th>Dosage</th>
+              <th>Frequency</th>
+              <th>Doses left</th>
               <th>Days</th>
               <th>Action</th>
             </tr>
@@ -57,6 +59,8 @@ export default function PatientPrescriptionMedicines() {
               <tr key={medicine.id}>
                 <td>{medicine.name}</td>
                 <td>{medicine.dosage}</td>
+                <td>{medicine.frequency}</td>
+                <td>{medicine.dosage_left}</td>
                 <td>{medicine.days}</td>
                 <td><Link to={`/patient/prescriptions/medicines/tracker?p=${medicine.prescription_id}&m=${medicine.id}`}>Open tracker</Link></td>
               </tr>

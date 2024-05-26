@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { postWithAuth } from "../helpers/http";
 import PatientMain from "./Main"
 import { getQuery } from "../helpers/URL";
+import { isPastDate } from "../helpers/date";
 
 export async function getTrackers() {
   const res = await postWithAuth('/prescriptions/get/trackers', {
@@ -57,13 +58,21 @@ export default function PatientTrackers() {
           </thead>
           <tbody>
             {
-              trackers?.map((tracker_line: any) => (
-                <tr key={tracker_line.id}>
+              trackers?.map((tracker_line: any) => {
+                
+                return (<tr key={tracker_line.id} style={{ color: (isPastDate(new Date(tracker_line.take_by)) ? 'red' : 'inherit') }}>
                   <td>{tracker_line.id}</td>
                   <td>{tracker_line.is_taken ? 'Taken' : 'Not taken'}</td>
-                  <td><span onClick={() => take(tracker_line.id)}>Take</span></td>
-                </tr>
-              ))
+                  <td>
+                    { 
+                      !isPastDate(new Date(tracker_line.take_by))
+                      ? <span className="hover" onClick={() => take(tracker_line.id)}>Take</span> : 
+                      <span>Past</span>
+                    }
+                  </td>
+                    
+                </tr>)
+              })
             }
           </tbody>
         </table>

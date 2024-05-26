@@ -20,4 +20,10 @@ export default new (class _Model extends SQLifier {
   removeOne(id) {
     this.update({ id }, { is_deleted: true })
   }
+
+  getLastByPatient (patient_id: string) {
+    return this.findLatestOne({
+      condition: {patient_id}
+    })
+  }
 })

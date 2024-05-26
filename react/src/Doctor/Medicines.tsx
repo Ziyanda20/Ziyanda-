@@ -46,6 +46,7 @@ export default function DoctorPrescriptionMedicines() {
             <tr>
               <th>Medicine</th>
               <th>Dosage</th>
+              <th>Frequency</th>
               <th>Days</th>
             </tr>
           </thead>
@@ -55,6 +56,7 @@ export default function DoctorPrescriptionMedicines() {
               <tr key={medicine.id}>
                 <td>{medicine.name}</td>
                 <td>{medicine.dosage}</td>
+                <td>{medicine.frequency}</td>
                 <td>{medicine.days}</td>
               </tr>
             ))}

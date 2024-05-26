@@ -16,7 +16,8 @@ export default (props: any) => {
   const [items, setItems] = useState([{
     name: '',
     dosage: '',
-    days: 0
+    frequency: '',
+    days: ''
   }])
 
   function inputChangeHandler(index: number, event: any) {
@@ -28,9 +29,10 @@ export default (props: any) => {
 
   const addMedicineItem = () => {
     let fields = {
-      name: ' ',
-      dosage: ' ',
-      days: 0
+      name: '',
+      dosage: '',
+      frequency: '',
+      days: ''
     }
 
     setItems([...items, fields])
@@ -49,6 +51,7 @@ export default (props: any) => {
     items.forEach((item, index) => {
       data[`name_${index}`] = item.name;
       data[`dosage_${index}`] = item.dosage;
+      data[`frequency_${index}`] = item.frequency;
       data[`days_${index}`] = item.days;
     });
 
@@ -92,10 +95,28 @@ export default (props: any) => {
                     <input type="text" name="name" placeholder="Medicine" id={`medicine-${index + 1}-name`} value={item.name} onChange={(e) => inputChangeHandler(index, e)}/>
                   </div>
                   <div className="input">
-                    <input type="text" name="dosage" placeholder="Dosage" id={`medicine-${index + 1}-dosage`} value={item.dosage} onChange={(e) => inputChangeHandler(index, e)} />
+                    <select name="dosage" id={`medicine-${index + 1}-dosage`} onChange={(e) => inputChangeHandler(index, e)}>
+                      <option value="select">-- Dosage --</option>
+                      <option value="1 Teaspoon">1 Teaspoon</option>
+                      <option value="2 Teaspoons">2 Teaspoons</option>
+                      <option value="3 Teaspoons">3 Teaspoons</option>
+                      <option value="4 Teaspoons">4 Teaspoons</option>
+                      <option value="1 Pill">1 Pill</option>
+                      <option value="2 Pills">1 Pills</option>
+                      <option value="3 Pills">1 Pills</option>
+                      <option value="4 Pills">1 Pills</option>
+                    </select>
                   </div>
                   <div className="input">
-                    <input type="text" name="days" placeholder="Days" id={`medicine-${index + 1}-days`} value={item.days} onChange={(e) => inputChangeHandler(index, e)} />
+                    <select name="frequency" id={`medicine-${index + 1}-frequency`} onChange={(e) => inputChangeHandler(index, e)}>
+                      <option value="select">-- Frequency --</option>
+                      <option value="Once a day">Once a day</option>
+                      <option value="Twice a day">Twice a day</option>
+                      <option value="Three times a day">Three times a day</option>
+                    </select>
+                  </div>
+                  <div className="input">
+                    <input type="number" name="days" placeholder="Days" id={`medicine-${index + 1}-days`} value={item.days} onChange={(e) => inputChangeHandler(index, e)} />
                   </div>
                   <i className="fa-solid fa-xmark" onClick={() => removeMedicineItem(index)}></i>
                 </div>

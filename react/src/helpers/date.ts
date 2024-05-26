@@ -51,6 +51,13 @@ export function formatTime(date: Date) {
   return formattedTime;
 }
 
+export const isPastDate = (date: Date) => {
+  const now = (new Date()).getTime();
+
+  // Calculate the difference in milliseconds
+  return now > date.getTime()
+}
+
 export default (date: Date): string => {
   const day = date.getDate(),
     month = getMonths()[date.getMonth()],

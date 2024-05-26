@@ -9,6 +9,7 @@ import { closeModal, openModal } from "../helpers/modals";
 import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
 import { showError } from "../helpers/error";
+import { Link } from "react-router-dom";
 
 export async function getPatients() {
   const res = await postWithAuth('/patients/get/by/doctor', {});
@@ -76,7 +77,10 @@ export default function DoctorPatients() {
                   <td>{patient.full_name}</td>
                   <td>{patient.id_number}</td>
                   <td>{formatTime(new Date(patient.date_created))}</td>
-                  <td className="hover-del" onClick={() => removePatient(patient.id)}>Remove</td>
+                  <td>
+                    <span className="hover-del margin--right-2" onClick={() => removePatient(patient.id)}>Remove</span>
+                    <span className="hover"><Link to={`/doctor/diagnoses?patient=${patient.id}`}>Diagnose</Link></span>
+                  </td>
                 </tr>
               ))
             }
