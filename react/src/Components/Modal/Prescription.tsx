@@ -102,9 +102,9 @@ export default (props: any) => {
                       <option value="3 Teaspoons">3 Teaspoons</option>
                       <option value="4 Teaspoons">4 Teaspoons</option>
                       <option value="1 Pill">1 Pill</option>
-                      <option value="2 Pills">1 Pills</option>
-                      <option value="3 Pills">1 Pills</option>
-                      <option value="4 Pills">1 Pills</option>
+                      <option value="2 Pills">2 Pills</option>
+                      <option value="3 Pills">3 Pills</option>
+                      <option value="4 Pills">4 Pills</option>
                     </select>
                   </div>
                   <div className="input">
