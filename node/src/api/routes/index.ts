@@ -11,13 +11,14 @@ import driverRoutes from "./driver";
 import deliveryRoutes from "./delivery";
 
 export default (app: Application): void => {
+  pharmacyRoutes(app);
+  driverRoutes(app);
   userRoutes(app);
   employeeRoutes(app);
   patientRoutes(app);
   diagnosesRoutes(app);
   prescriptionRoutes(app);
   medicineRoutes(app);
-  pharmacyRoutes(app);
-  driverRoutes(app);
+  
   deliveryRoutes(app);
 };
