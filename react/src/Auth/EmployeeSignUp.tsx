@@ -62,7 +62,7 @@ export default function DoctorSignUp() {
             <button className="btn btn--primary">Regiter now</button>
 
             <div className="auth__main__form__footer">
-              <p>Have an account? <Link to="/doctor/login">Login</Link></p>
+              <p>Have an account? <Link to="/employee/login">Login</Link></p>
               {/* <p>Are you a patient? Login here</p> */}
             </div>
           </div>

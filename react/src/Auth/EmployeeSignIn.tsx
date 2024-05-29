@@ -51,7 +51,7 @@ export default function _() {
             <button className="btn btn--primary">Login</button>
 
             <div className="auth__main__form__footer">
-              <p>Don't have an account? <Link to="/doctor/register">Register</Link></p>
+              <p>Don't have an account? <Link to="/hospital/register">Register</Link></p>
               {/* <p>Are you a patient? Login here</p> */}
             </div>
           </div>

@@ -58,7 +58,7 @@ export default function DoctorSignIn() {
             <div className="input">
               <input type="password" id="password-again" placeholder="Password again" />
             </div>
-            <button className="btn btn--primary">Login</button>
+            <button className="btn btn--primary">Register</button>
           </div>
         </form>
       </main>
