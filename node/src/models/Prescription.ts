@@ -7,8 +7,8 @@ export default new (class _Model extends SQLifier {
     this.schema('prescription', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
       patient_id: { type: 'int'  },
-      doctor_id: { type: 'int' },
-      address_id: { type: 'int'  },
+      employee_id: { type: 'int' },
+      pharmacy_id: { type: 'int' },
       diagnosis_id: { type: 'int' },
       is_deleted: { type: 'boolean', default: false },
       is_ready: { type: 'boolean', default: false },

@@ -3,7 +3,6 @@ import Diagnoses from "../models/Diagnosis";
 import Medicine from "../models/Medicine";
 import DosageTracker from "../models/DosageTracker";
 import Delivery from "../models/Delivery";
-import Address from "../models/Address";
 import DeliveryLines from "../models/DeliveryLine";
 import { getDayDifference } from "../helpers/Datetime";
 
@@ -56,7 +55,7 @@ async function createPrescription(body: any, doctor: any): Promise<IResponse> {
     const prescription = await Prescription.insert({
       diagnosis_id,
       patient_id: diagnosis.patient_id,
-      doctor_id: doctor.id,
+      employee_id: doctor.id,
     });
 
     for (let index = 0; index < medicine_count; index++) {
@@ -111,7 +110,7 @@ async function removePrescription(body: any, doctor: any): Promise<IResponse> {
 async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
   try {
     this.prescriptions = await Prescription.find({
-      condition: { doctor_id: doctor.id, is_deleted: false },
+      condition: { employee_id: doctor.id, is_deleted: false },
       join: [
         {
           ref: "patient",
@@ -123,19 +122,6 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
         },
       ],
     });
-
-    for (let i = 0; i < this.prescriptions.length; i++) {
-      const prescription = this.prescriptions[i];
-
-      if (!prescription.address_id) continue;
-
-      const _address = await Address.findOne({ condition: { id: prescription.address_id } });
-
-      prescription.line_1 = _address.line_1;
-      prescription.line_2 = _address.line_2;
-      prescription.province = _address.province;
-    }
-
 
     this.successful = true;
   } catch (error) {
@@ -150,8 +136,13 @@ async function getAllByPatient(body: any, patient): Promise<IResponse> {
       condition: { patient_id: patient.id, is_deleted: false },
       join: [
         {
-          ref: "doctor",
-          id: "doctor_id",
+          ref: "employee",
+          id: "employee_id",
+        },
+        {
+          kind: 'left',
+          ref: "pharmacy",
+          id: "pharmacy_id",
         },
         {
           ref: "diagnosis",
@@ -160,17 +151,28 @@ async function getAllByPatient(body: any, patient): Promise<IResponse> {
       ],
     });
 
-    for (let i = 0; i < this.prescriptions.length; i++) {
-      const prescription = this.prescriptions[i];
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
 
-      if (!prescription.address_id) continue;
-
-      const _address = await Address.findOne({ condition: { id: prescription.address_id } });
-
-      prescription.line_1 = _address.line_1;
-      prescription.line_2 = _address.line_2;
-      prescription.province = _address.province;
-    }
+async function getAllByPharmacy(body: any, pharmacist): Promise<IResponse> {
+  try {
+    this.prescriptions = await Prescription.find({
+      condition: { pharmacy_id: pharmacist.pharmacy_id, is_deleted: false },
+      join: [
+        {
+          ref: "patient",
+          id: "patient_id",
+        },
+        {
+          ref: "diagnosis",
+          id: "diagnosis_id",
+        }
+      ],
+    });
 
     this.successful = true;
   } catch (error) {
@@ -250,7 +252,24 @@ async function take(body: any): Promise<IResponse> {
   return this;
 }
 
-async function makeReady(body, doctor) {
+async function assignPharmacy(body: any): Promise<IResponse> {
+  try {
+    const prescription = await Prescription.findOne({
+      condition: { id: body.prescription_id },
+    });
+
+    prescription.pharmacy_id = body.pharmacy_id;
+
+    prescription.save();
+
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
+
+async function dispatchDelivery(body, pharmacist) {
   try {
     const { prescriptionId } = body;
 
@@ -264,10 +283,10 @@ async function makeReady(body, doctor) {
     prescription.status = 'Dispatched for delivery'
 
     const delivery = await Delivery.insert({
-      doctor_id: doctor.id,
+      pharmacy_id: pharmacist.pharmacy_id,
       diagnosis_id: prescription.diagnosis_id,
       patient_id: prescription.patient_id,
-      status: prescription.status,
+      status: 'Dispatched; Waiting on driver',
     });
 
     prescription.save();
@@ -290,37 +309,15 @@ async function makeReady(body, doctor) {
   return this;
 }
 
-async function assignAddress (body, patient) {
-  try {
-    const { prescriptionId } = body;
-
-    const address = await Address.findOne({ condition: { patient_id: patient.id } })
-
-    if (!address) return this;
-
-    const prescription = await Prescription.findOne({
-      condition: { id: prescriptionId },
-    });
-
-    prescription.address_id = address.id;
-
-    prescription.save();
-
-    this.successful = true;
-  } catch (error) {
-    throw error;
-  }
-  return this;
-}
-
 export default {
-  assignAddress,
-  makeReady,
+  dispatchDelivery,
   getTrackerItems,
+  assignPharmacy,
   take,
   removePrescription,
   createPrescription,
   getAllByPatient,
   getAllByDoctor,
+  getAllByPharmacy,
   getOneById,
 };

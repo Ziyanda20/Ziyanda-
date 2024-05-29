@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { postWithAuth } from "../helpers/http";
-import DoctorMain from "./Main"
+import { formatTime } from "../helpers/date";
+import { Link } from "react-router-dom";
+import PharmacyMain from "./Main"
 
 export async function getDeliveries() {
-  const res = await postWithAuth('/deliveries/get/by/doctor', {});
+  const res = await postWithAuth('/deliveries/get/by/pharmacy', {});
 
   return res.deliveries;
 }
@@ -18,19 +20,20 @@ export default function _ () {
   }, [])
 
   return (
-    <DoctorMain page="deliveries">
+    <PharmacyMain page="deliveries">
       <div className="container__main__title">
-        <h4><i className="fa-solid fa-truck-fast margin--right-1"></i><span>Deliveries</span></h4>
-        <p>See your patients' deliveries from here</p>
+        <h4><i className="fa-regular fa-paste margin--right-1"></i><span>Deliveries</span></h4>
+        <p>Patient deliveries</p>
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
         <table className="table">
           <thead>
             <tr>
-              <th>Patient</th>
+              <th>Patient name</th>
+              <th>Delivery address</th>
               <th>Diagnosis</th>
-              <th>Status</th>
+              <th>Prescribed on</th>
             </tr>
           </thead>
           <tbody>
@@ -38,14 +41,15 @@ export default function _ () {
               deliveries?.map((delivery: any) => (
                 <tr key={delivery.id}>
                   <td>{delivery.full_name}</td>
+                  <td>{!delivery.addr_line_1 ? (<span>No address</span>) : <span>{delivery.addr_line_1}, {delivery.addr_line_2}, {delivery.province}</span>}</td>
                   <td>{delivery.name}</td>
-                  <td>{delivery.status}</td>
+                  <td>{formatTime(new Date(delivery.date_created))}</td>
                 </tr>
               ))
             }
           </tbody>
         </table>
       </div>
-    </DoctorMain>
+    </PharmacyMain>
   )
 }

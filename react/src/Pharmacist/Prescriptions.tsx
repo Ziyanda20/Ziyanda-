@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
-import Prescription from "../Components/Modal/Prescription"
-import { getValueById } from "../helpers/dom";
 import { postWithAuth } from "../helpers/http";
-import { closeModal, openModal } from "../helpers/modals";
-import DoctorMain from "./Main"
 import { formatTime } from "../helpers/date";
 import { Link } from "react-router-dom";
-import { showError } from "../helpers/error";
+import PharmacyMain from "./Main"
 
 export async function getPrescriptions() {
-  const res = await postWithAuth('/prescriptions/get/by/doctor', {});
+  const res = await postWithAuth('/prescriptions/get/by/pharmacy', {});
 
   return res.prescriptions;
 }
 
-export default function DoctorPrescriptions() {
+export default function _ () {
   const [prescriptions, setPrescriptions] = useState([]);
 
   useEffect(() => {
@@ -23,44 +19,16 @@ export default function DoctorPrescriptions() {
     })();
   }, [])
 
-  async function submitPrescription(e: any, medicines: any, itemsCount: number) {
-    e.preventDefault();
-
-    const res = await postWithAuth('/prescriptions/add', {
-      diagnosis_id: getValueById('prescription-diagnosis'),
-      medicine_count: itemsCount,
-      ...medicines
-    })
-
-    if (res.successful) {
-      closeModal('new-prescription')
-
-      setPrescriptions(await getPrescriptions())
-
-      return;
-    };
-
-    showError('prescription', res.error)
-  }
-
-  async function removePrescription(prescription_id: string) {
-    await postWithAuth('/prescriptions/remove/one', {
-      prescription_id
-    })
-
-    setPrescriptions(await getPrescriptions())
-  }
-
-  async function makeReady(prescriptionId: string) {
-    await postWithAuth('/prescriptions/make-ready', {
+  async function dispatch(prescriptionId: string) {
+    await postWithAuth('/prescriptions/dispatch-delivery', {
       prescriptionId
-    })
+    });
 
     setPrescriptions(await getPrescriptions())
   }
 
   return (
-    <DoctorMain page="prescriptions">
+    <PharmacyMain page="prescriptions">
       <div className="container__main__title">
         <h4><i className="fa-regular fa-paste margin--right-1"></i><span>Prescriptions</span></h4>
         <p>Manage your patients' prescriptions from here</p>
@@ -75,6 +43,7 @@ export default function DoctorPrescriptions() {
               <th>Diagnosis</th>
               <th>Medicines</th>
               <th>Prescribed on</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -84,21 +53,15 @@ export default function DoctorPrescriptions() {
                   <td>{prescription.full_name}</td>
                   <td>{!prescription.addr_line_1 ? (<span>No address</span>) : <span>{prescription.addr_line_1}, {prescription.addr_line_2}, {prescription.province}</span>}</td>
                   <td>{prescription.name}</td>
-                  <td className="hover"><Link to={`/doctor/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
+                  <td className="hover"><Link to={`/pharmacy/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
                   <td>{formatTime(new Date(prescription.date_created))}</td>
+                  <td>{!prescription.is_ready ? (<span onClick={() => dispatch(prescription.id)}>Dispatch delivery</span>) : 'Dispatched'}</td>
                 </tr>
               ))
             }
           </tbody>
         </table>
-
-        <p className="margin--top-2 hover" onClick={() => openModal('new-prescription')}>
-          <i className="fa-solid fa-plus margin--right-1"></i>
-          <span>Add Prescription</span>
-        </p>
       </div>
-
-      <Prescription submitPrescription={submitPrescription}/>
-    </DoctorMain>
+    </PharmacyMain>
   )
 }

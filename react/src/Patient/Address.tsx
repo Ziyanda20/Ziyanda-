@@ -1,31 +1,40 @@
 import { useEffect, useState } from "react";
-import { postWithAuth } from "../helpers/http";
+import { getUserBySession, postWithAuth, rememberUser } from "../helpers/http";
 import PatientMain from "./Main"
 import { getValueById } from "../helpers/dom";
 
-export async function getAddress() {
-  const res = await postWithAuth('/patients/get/address', {});
-
-  return res.address;
-}
 
 export default function _() {
   const [address, setAddress] = useState(null) as any;
 
+  const getAddr = (user: any) => {
+    return {
+      addr_line_1: user.addr_line_1,
+      addr_line_2: user.addr_line_2,
+      province: user.province
+    }
+  }
+
   useEffect(() => {
     (async () => {
-      setAddress(await getAddress())
+      const session = await getUserBySession();
+
+      setAddress(getAddr(session))
     })();
   }, [])
 
   async function updateAddress(e: any) {
     e.preventDefault();
 
-    await postWithAuth('/patients/update/address', {
+    let user = await postWithAuth('/patient/update/address', {
       line_1: getValueById('line-1'),
       line_2: getValueById('line-2'),
       province: getValueById('province')
-    });
+    }, true);
+
+    rememberUser(user);
+
+    setAddress(getAddr(user))
   }
 
   return (
@@ -39,10 +48,10 @@ export default function _() {
         <form onSubmit={updateAddress}>
           <div className="flex address">
             <div className="input">
-              <input type="text" id="line-1" defaultValue={address?.line_1} placeholder="Street" />
+              <input type="text" id="line-1" defaultValue={address?.addr_line_1} placeholder="Street" />
             </div>
             <div className="input">
-              <input type="text" id="line-2" defaultValue={address?.line_2} placeholder="Line 2" />
+              <input type="text" id="line-2" defaultValue={address?.addr_line_2} placeholder="Line 2" />
             </div>
             <div className="input">
               <input type="text" id="province" defaultValue={address?.province} placeholder="Province" />

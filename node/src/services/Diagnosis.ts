@@ -23,7 +23,7 @@ async function createDiagnoses(body: any, doctor: any): Promise<IResponse> {
 
     const diagnose = await Diagnoses.insert({
       name,
-      doctor_id: doctor.id,
+      employee_id: doctor.id,
       patient_id
     });
 
@@ -50,7 +50,7 @@ async function removeDiagnoses(body: any, doctor: any): Promise<IResponse> {
 async function getAllDiagnosesByDoctor(body: any, doctor: any): Promise<IResponse> {
   try {
     const diagnoses = await Diagnoses.find({
-      condition: { doctor_id: doctor.id, is_deleted: false },
+      condition: { employee_id: doctor.id, is_deleted: false },
       join: [
         {
           ref: 'patient',

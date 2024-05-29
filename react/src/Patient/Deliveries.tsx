@@ -28,7 +28,8 @@ export default function _ () {
         <table className="table">
           <thead>
             <tr>
-              <th>Prescribing doctor</th>
+              <th>Delivery person</th>
+              <th>Delivery from</th>
               <th>Diagnosis</th>
               <th>Status</th>
             </tr>
@@ -37,7 +38,8 @@ export default function _ () {
             {
               deliveries?.map((delivery: any) => (
                 <tr key={delivery.id}>
-                  <td>{delivery.full_name}</td>
+                  <td>{delivery.full_name || 'Driver unavailable'}</td>
+                  <td>{delivery._pharmacy_name || 'Pharmacy unavailable'}</td>
                   <td>{delivery.name}</td>
                   <td>{delivery.status}</td>
                 </tr>

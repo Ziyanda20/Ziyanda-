@@ -44,7 +44,7 @@ export const getUserBySession = async () => {
   return user;
 };
 
-export const rememberUser = async (user: any) => {
+export const rememberUser = (user: any) => {
   session.set("user", user);
 };
 

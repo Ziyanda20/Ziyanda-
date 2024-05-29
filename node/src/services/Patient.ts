@@ -1,5 +1,5 @@
 import Patient from "../models/Patient";
-import DoctorPatient from "../models/DoctorPatient";
+import Admission from "../models/Admission";
 import Prescription from "../models/Prescription";
 
 import v from "../helpers/Validation";
@@ -10,7 +10,7 @@ import { removePassword, saveSession } from "./User";
 
 import { IAny, IResponse } from "../interfaces";
 
-async function createPatient(body: any, doctor): Promise<IResponse> {
+async function createPatient(body: any, admin): Promise<IResponse> {
   try {
     const { name, id } = body;
 
@@ -25,9 +25,9 @@ async function createPatient(body: any, doctor): Promise<IResponse> {
     let patient = await Patient.findOne({ condition: { id_number: id } });
 
     if (patient) {
-      let doctorPatientRel = await DoctorPatient.getLastByPatient(patient.id);
+      let admission = await Admission.getLastByPatient(patient.id);
 
-      if (doctorPatientRel && getDayDifference(doctorPatientRel.date_created) < 30) {
+      if (admission && getDayDifference(admission.date_created) < 30) {
         throw 'Patient was recently added';
       }
 
@@ -44,9 +44,9 @@ async function createPatient(body: any, doctor): Promise<IResponse> {
       password: await hasher.hash('Password123'),
     });
 
-    if (!(await DoctorPatient.exists({ doctor_id: doctor.id, patient_id: patient.id })).found)
-      await DoctorPatient.insert({
-        doctor_id: doctor.id,
+    if (!(await Admission.exists({ hospital_id: admin.hospital_id, patient_id: patient.id })).found)
+      await Admission.insert({
+        hospital_id: admin.hospital_id,
         patient_id: patient.id,
       })
 
@@ -57,7 +57,7 @@ async function createPatient(body: any, doctor): Promise<IResponse> {
   return this;
 }
 
-async function removePatient(body: any, doctor): Promise<IResponse> {
+async function removePatient(body: any, admin): Promise<IResponse> {
   try {
     const { name, patient_id } = body;
 
@@ -70,14 +70,14 @@ async function removePatient(body: any, doctor): Promise<IResponse> {
   return this;
 }
 
-async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
+async function getAllByHospital(body: any, admin): Promise<IResponse> {
   try {
-    this.patients = await DoctorPatient.find({
-      condition: { doctor_id: doctor.id },
+    this.patients = await Admission.find({
+      condition: { hospital_id: admin.hospital_id },
       join: {
         ref: 'patient',
         condition: {
-          id: { $r: 'doctor_patient.patient_id' },
+          id: { $r: 'admission.patient_id' },
           is_deleted: false
         }
       }
@@ -89,7 +89,6 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
   }
   return this;
 }
-
 
 async function authPatient(body: any): Promise<IResponse> {
   try {
@@ -120,4 +119,23 @@ async function authPatient(body: any): Promise<IResponse> {
   return this;
 }
 
-export default { authPatient, removePatient, createPatient, getAllByDoctor };
+async function updateAddress(body: any, user: any) : Promise<IResponse>{
+  let _user = await Patient.findOne({
+    condition: { id: user.id }
+  })
+
+  _user.addr_line_1 = body.line_1;
+  _user.addr_line_2 = body.line_2;
+  _user.province = body.province;
+
+  _user.save();
+
+  let res =  {..._user.toObject(), id: _user.id, addr_line_1: body.line_1, addr_line_2: body.line_2, province: body.province }; 
+  this.user = res;
+  
+  saveSession.call(this, removePassword(res));
+
+  return this;
+}
+
+export default { updateAddress, authPatient, removePatient, createPatient, getAllByHospital };

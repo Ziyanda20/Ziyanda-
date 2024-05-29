@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { getPatients } from "./Patients";
 import { closeModal, openModal } from "../helpers/modals";
 import { postWithAuth } from "../helpers/http";
 import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
+import { getPatients } from "../Hospital/Patients";
+import { showError } from "../helpers/error";
 import DoctorMain from "./Main"
 import Diagnoses from "../Components/Modal/Diagnoses";
-import { showError } from "../helpers/error";
 
 export default function DoctorDiagnoses() {
   const [patients, setPatients] = useState([]);
@@ -15,8 +15,8 @@ export default function DoctorDiagnoses() {
 
   useEffect(() => {
     (async () => {
-      setPatients(await getPatients())
       setDiagnoses(await getDiagnoses())
+      setPatients(await getPatients())
     })()
   }, [])
 

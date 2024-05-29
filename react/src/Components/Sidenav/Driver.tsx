@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Sidenav.css"
 import { postWithAuth } from "../../helpers/http";
 
-export default function DoctorSidenav(props: any) {
+export default function _ (props: any) {
   const nav = useNavigate();
 
   const pageIs = (page: string) => {
@@ -16,7 +16,7 @@ export default function DoctorSidenav(props: any) {
 
     postWithAuth('/logout', {}, true)
 
-    nav('/employee/login');
+    nav('/driver/login');
   }
 
   return (
@@ -27,20 +27,14 @@ export default function DoctorSidenav(props: any) {
       </div>
       <ul className="sidenav__body flex">
         <li>
-          <Link to='/doctor/diagnoses' className={`sidenav__body__item ${pageIs('diagnoses')} flex flex--a-center`}>
-            <i className="fa-solid fa-stethoscope"></i>
-            <span>Diagnoses</span>
-          </Link>
-        </li>
-        <li>
-          <Link to='/doctor/prescriptions' className={`sidenav__body__item ${pageIs('prescriptions')} flex flex--a-center`}>
-            <i className="fa-regular fa-paste"></i>
-            <span>Prescriptions</span>
+          <Link to='/driver/deliveries' className={`sidenav__body__item ${pageIs('deliveries')} flex flex--a-center`}>
+            <i className="fa-solid fa-truck-fast"></i>
+            <span>Deliveries</span>
           </Link>
         </li>
 
         <li>
-          <Link to='/doctor/logout' className={`sidenav__body__item flex flex--a-center`} onClick={logout}>
+          <Link to='/driver/logout' className={`sidenav__body__item flex flex--a-center`} onClick={logout}>
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
             <span>Log out</span>
           </Link>

@@ -1,0 +1,7 @@
+#new-driver-modal .input label {
+  flex: 0 0 15rem;
+}
+
+#new-driver-modal .input:not(:last-child) {
+  margin-bottom: 1.5rem;
+}

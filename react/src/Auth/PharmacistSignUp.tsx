@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { clearUser, postWithNoAuth } from "../helpers/http";
 import { getValueById } from "../helpers/dom";
-import { Link, useNavigate } from "react-router-dom";
 import { id } from "../helpers/string";
-import "./Auth.css"
 import { showError } from "../helpers/error";
+import "./Auth.css"
 
-export default function DoctorSignUp() {
+export default function DoctorSignIn() {
   const [auth, setAuth] = useState(null) as any;
 
   const nav = useNavigate();
 
-  const registerDoctor = async (e: any) => {
+  const registerPharmacist = async (e: any) => {
     (e as PointerEvent).preventDefault();
 
-    const res = await postWithNoAuth('/doctor/register', {
+    const res = await postWithNoAuth('/pharmacist/register', {
+      name: getValueById('pharmacy-name'),
       fullname: getValueById('fullname'),
       email: id(getValueById('email')),
       password: getValueById('password'),
@@ -29,20 +30,22 @@ export default function DoctorSignUp() {
   }
 
   useEffect(() => {
-    if (auth) nav('/doctor/prescriptions');
+    if (auth) nav('/pharmacy/prescriptions');
   }, [auth]);
 
   return (
     <div className="auth flex">
       <main className="auth__main">
-        <form className="auth__main__form" onSubmit={registerDoctor}>
+        <form className="auth__main__form" onSubmit={registerPharmacist}>
           <div className="auth__main__form__title">
             <h1><span>MY</span>PHARMACIST</h1>
-            <p>Doctor sign up</p>
+            <p>Pharmacist sign in</p>
           </div>
           <div className="auth__main__form__body">
             <p className="error hide" id="auth-error">Erro</p>
-
+            <div className="input">
+              <input type="text" id="pharmacy-name" placeholder="Pharmacy name" />
+            </div>
             <div className="input">
               <input type="text" id="fullname" placeholder="Full name" />
             </div>
@@ -55,13 +58,7 @@ export default function DoctorSignUp() {
             <div className="input">
               <input type="password" id="password-again" placeholder="Password again" />
             </div>
-
-            <button className="btn btn--primary">Regiter now</button>
-
-            <div className="auth__main__form__footer">
-              <p>Have an account? <Link to="/doctor/login">Login</Link></p>
-              {/* <p>Are you a patient? Login here</p> */}
-            </div>
+            <button className="btn btn--primary">Login</button>
           </div>
         </form>
       </main>

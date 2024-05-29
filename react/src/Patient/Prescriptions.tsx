@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { postWithAuth } from "../helpers/http";
-import PatientMain from "./Main"
 import { formatTime } from "../helpers/date";
 import { Link } from "react-router-dom";
+import PatientMain from "./Main"
+import Pharmacies from "../Components/Modal/Pharmacies";
+import { closeModal, openModal } from "../helpers/modals";
 
 export async function getPrescriptions() {
   const res = await postWithAuth('/prescriptions/get/by/patient', {});
@@ -10,12 +12,21 @@ export async function getPrescriptions() {
   return res.prescriptions;
 }
 
+export async function getPharmacies() {
+  const res = await postWithAuth('/pharmacies/get/all', {});
+
+  return res.pharmacies;
+}
+
 export default function DoctorPrescriptions() {
+  const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptions, setPrescriptions] = useState([]);
+  const [pharmacies, setPharmacies] = useState([]);
 
   useEffect(() => {
     (async () => {
       setPrescriptions(await getPrescriptions())
+      setPharmacies(await getPharmacies())
     })();
   }, [])
 
@@ -26,6 +37,23 @@ export default function DoctorPrescriptions() {
 
     setPrescriptions(await getPrescriptions())
   }
+
+  async function assignPharmacy(pharmacy_id: string) {
+    const res = await postWithAuth('/prescriptions/assign-pharmacy', {
+      pharmacy_id,
+      prescription_id: prescriptionId
+    });
+
+    setPrescriptions(await getPrescriptions())
+    
+    closeModal('select-pharmacy')
+  }
+
+  function _openModal (prescription_id: string) {
+    setPrescriptionId(prescription_id);
+
+    openModal('select-pharmacy')
+  } 
 
   return (
     <PatientMain page="prescriptions">
@@ -39,9 +67,9 @@ export default function DoctorPrescriptions() {
           <thead>
             <tr>
               <th>Doctor name</th>
+              <th>Pharmacy</th>
               <th>Diagnosis</th>
               <th>Medicines</th>
-              <th>Delivery address</th>
               <th>Prescribed on</th>
             </tr>
           </thead>
@@ -50,12 +78,16 @@ export default function DoctorPrescriptions() {
               prescriptions?.map((prescription: any) => (
                 <tr key={prescription.id}>
                   <td>{prescription.full_name}</td>
-                  <td>{prescription.name}</td>
-                  <td className="hover"><Link to={`/patient/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
-                  <td>
-                    {prescription.address_id ? (<span>{prescription.line_1}, {prescription.line_2}, {prescription.province}</span>) : <span onClick={() => setAddress(prescription.id)} className="hover">Use default</span>}
-                    
+                  <td >
+                    { !prescription.pharmacy_id ? 
+                      (
+                        <span className="hover" onClick={() => _openModal(prescription.id)}>Not selected | Select</span>
+                      ) : 
+                      <span>{prescription.name}</span>
+                    }
                   </td>
+                  <td>{prescription._diagnosis_name}</td>
+                  <td className="hover"><Link to={`/patient/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
                   <td>{formatTime(new Date(prescription.date_created))}</td>
                 </tr>
               ))
@@ -63,6 +95,7 @@ export default function DoctorPrescriptions() {
           </tbody>
         </table>
       </div>
+      <Pharmacies assignPharmacy={assignPharmacy} pharmacies={pharmacies} />
     </PatientMain>
   )
 }

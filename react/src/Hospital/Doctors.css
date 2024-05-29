@@ -1,0 +1,7 @@
+#new-doctor-modal .input label{
+  flex: 0 0 15rem;
+}
+
+#new-doctor-modal .input:not(:last-child){
+  margin-bottom: 1.5rem;
+}

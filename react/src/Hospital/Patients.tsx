@@ -12,7 +12,7 @@ import { showError } from "../helpers/error";
 import { Link } from "react-router-dom";
 
 export async function getPatients() {
-  const res = await postWithAuth('/patients/get/by/doctor', {});
+  const res = await postWithAuth('/patients/get/by/hospital', {});
 
   return res.patients;
 }
@@ -78,8 +78,8 @@ export default function DoctorPatients() {
                   <td>{patient.id_number}</td>
                   <td>{formatTime(new Date(patient.date_created))}</td>
                   <td>
-                    <span className="hover-del margin--right-2" onClick={() => removePatient(patient.id)}>Remove</span>
-                    <span className="hover"><Link to={`/doctor/diagnoses?patient=${patient.id}`}>Diagnose</Link></span>
+                    <span className="hover-del" onClick={() => removePatient(patient.id)}>Remove</span>
+                    {/* <span className="hover"><Link to={`/doctor/diagnoses?patient=${patient.id}`}>Diagnose</Link></span> */}
                   </td>
                 </tr>
               ))

@@ -27,15 +27,15 @@ export default function DoctorSidenav(props: any) {
       </div>
       <ul className="sidenav__body flex">
         <li>
-          <Link to='/doctor/diagnoses' className={`sidenav__body__item ${pageIs('diagnoses')} flex flex--a-center`}>
-            <i className="fa-solid fa-stethoscope"></i>
-            <span>Diagnoses</span>
+          <Link to='/hospital/doctors' className={`sidenav__body__item ${pageIs('doctors')} flex flex--a-center`}>
+            <i className="fa-solid fa-people-group"></i>
+            <span>Doctors</span>
           </Link>
         </li>
         <li>
-          <Link to='/doctor/prescriptions' className={`sidenav__body__item ${pageIs('prescriptions')} flex flex--a-center`}>
-            <i className="fa-regular fa-paste"></i>
-            <span>Prescriptions</span>
+          <Link to='/hospital/patients' className={`sidenav__body__item ${pageIs('patients')} flex flex--a-center`}>
+            <i className="fa-solid fa-people-group"></i>
+            <span>Patients</span>
           </Link>
         </li>
 

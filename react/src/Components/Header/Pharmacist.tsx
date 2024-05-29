@@ -8,7 +8,7 @@ export default function DoctorHeader() {
   return (
     <header className="header flex flex--a-center flex--j-space-between">
       <div className="header__message">
-        <p><b>Good day</b>, {user.role == 'doctor' ? 'Doctor' : 'Administrator'}</p>
+        <p><b>Good day</b>, Pharmacist</p>
         <p>{user.full_name}</p>
       </div>
       <div className="header__account">

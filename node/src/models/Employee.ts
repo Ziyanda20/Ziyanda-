@@ -4,20 +4,15 @@ export default new (class _Model extends SQLifier {
   constructor() {
     super();
 
-    this.schema('patient', {
+    this.schema('employee', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
+      hospital_id: { type: 'int', ref: 'hospital' },
       full_name: { type: 'varchar', length: 30 },
-      id_number: { type: 'varchar', length: 13 },
+      role: { type: 'varchar', length: 20, default: 'admin' },
+      email: { type: 'varchar', length: 50 },
       password: { type: 'varchar', length: 250 },
       is_deleted: { type: 'boolean', default: false },
-      addr_line_1: { type: 'varchar', length: 30 },
-      addr_line_2: { type: 'varchar', length: 30 },
-      province: { type: 'varchar', length: 30 },
       date_created: { type: 'datetime', default: SQLDate.now }
     })
-  }
-
-  removeOne(id) {
-    this.update({ id }, { is_deleted: true })
   }
 })

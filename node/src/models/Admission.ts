@@ -4,18 +4,13 @@ export default new (class _Model extends SQLifier {
   constructor() {
     super();
 
-    this.schema('diagnosis', {
+    this.schema('admission', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
-      name: { type: 'varchar', length: 100 },
+      hospital_id: { type: 'int', ref: 'hospital' },
       patient_id: { type: 'int', ref: 'patient' },
-      employee_id: { type: 'int', ref: 'employee' },
       is_deleted: { type: 'boolean', default: false },
       date_created: { type: 'datetime', default: SQLDate.now }
     })
-  }
-
-  removeOne(id) {
-    this.update({ id }, { is_deleted: true })
   }
 
   getLastByPatient (patient_id: string) {
