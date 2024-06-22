@@ -1,0 +1,11 @@
+.popup {
+  position: absolute;
+  right: 11%;
+  top: 5rem;
+  width: 30rem;
+  z-index: 10;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 1rem;
+  box-shadow: 0 0 4px #e3e3e3, 0 0 1px #e0e0e0;
+}

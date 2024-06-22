@@ -3,8 +3,6 @@ import { postWithAuth } from "../helpers/http";
 import { formatTime } from "../helpers/date";
 import { Link } from "react-router-dom";
 import PatientMain from "./Main"
-import Pharmacies from "../Components/Modal/Pharmacies";
-import { closeModal, openModal } from "../helpers/modals";
 
 export async function getPrescriptions() {
   const res = await postWithAuth('/prescriptions/get/by/patient', {});
@@ -12,21 +10,13 @@ export async function getPrescriptions() {
   return res.prescriptions;
 }
 
-export async function getPharmacies() {
-  const res = await postWithAuth('/pharmacies/get/all', {});
-
-  return res.pharmacies;
-}
 
 export default function DoctorPrescriptions() {
-  const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptions, setPrescriptions] = useState([]);
-  const [pharmacies, setPharmacies] = useState([]);
 
   useEffect(() => {
     (async () => {
       setPrescriptions(await getPrescriptions())
-      setPharmacies(await getPharmacies())
     })();
   }, [])
 
@@ -37,23 +27,6 @@ export default function DoctorPrescriptions() {
 
     setPrescriptions(await getPrescriptions())
   }
-
-  async function assignPharmacy(pharmacy_id: string) {
-    const res = await postWithAuth('/prescriptions/assign-pharmacy', {
-      pharmacy_id,
-      prescription_id: prescriptionId
-    });
-
-    setPrescriptions(await getPrescriptions())
-    
-    closeModal('select-pharmacy')
-  }
-
-  function _openModal (prescription_id: string) {
-    setPrescriptionId(prescription_id);
-
-    openModal('select-pharmacy')
-  } 
 
   return (
     <PatientMain page="prescriptions">
@@ -81,7 +54,7 @@ export default function DoctorPrescriptions() {
                   <td >
                     { !prescription.pharmacy_id ? 
                       (
-                        <span className="hover" onClick={() => _openModal(prescription.id)}>Not selected | Select</span>
+                        <span>Not assigned</span>
                       ) : 
                       <span>{prescription.name}</span>
                     }
@@ -95,7 +68,6 @@ export default function DoctorPrescriptions() {
           </tbody>
         </table>
       </div>
-      <Pharmacies assignPharmacy={assignPharmacy} pharmacies={pharmacies} />
     </PatientMain>
   )
 }

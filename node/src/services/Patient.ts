@@ -119,7 +119,54 @@ async function authPatient(body: any): Promise<IResponse> {
   return this;
 }
 
-async function updateAddress(body: any, user: any) : Promise<IResponse>{
+async function updateProfile(body: any, user: any) : Promise<IResponse>{
+  let _user = await Patient.findOne({
+    condition: { id: user.id }
+  })
+
+  _user.full_name = body.full_name;
+
+  _user.save();
+
+  let res =  {..._user.toObject(), id: _user.id, full_name: body.full_name }; 
+  this.user = res;
+  
+  saveSession.call(this, removePassword(res));
+  
+  this.successful = true;
+
+  return this;
+}
+
+async function updatePassword(body: any, user: any) : Promise<IResponse>{
+  v.validate({
+    'Password old': { value: body.password_old, min: 8, max: 30 },
+    'Password': { value: body.password, min: 8, max: 30 },
+    'Password again': { value: body.password_again, min: 8, max: 30, is: ['Password', 'Passwords do not match'] },
+  });
+
+  let _user = await Patient.findOne({
+    condition: { id: user.id }
+  })
+
+  if (!(await hasher.isSame(_user.password, body.password_old)))
+    throw 'Password do not match';
+
+  _user.password = await hasher.hash(body.password);
+
+  _user.save();
+
+  let res = _user.toObject(); 
+  this.user = res;
+  
+  this.successful = true;
+  
+  saveSession.call(this, removePassword(res));
+
+  return this;
+}
+
+async function updateAddress (body: any, user: any) : Promise<IResponse>{
   let _user = await Patient.findOne({
     condition: { id: user.id }
   })
@@ -132,10 +179,12 @@ async function updateAddress(body: any, user: any) : Promise<IResponse>{
 
   let res =  {..._user.toObject(), id: _user.id, addr_line_1: body.line_1, addr_line_2: body.line_2, province: body.province }; 
   this.user = res;
+
+  this.successful = true;
   
   saveSession.call(this, removePassword(res));
 
   return this;
 }
 
-export default { updateAddress, authPatient, removePatient, createPatient, getAllByHospital };
+export default { updateAddress, updatePassword, updateProfile, authPatient, removePatient, createPatient, getAllByHospital };

@@ -7,6 +7,7 @@ import DoctorMain from "./Main"
 import { formatTime } from "../helpers/date";
 import { Link } from "react-router-dom";
 import { showError } from "../helpers/error";
+import Pharmacies from "../Components/Modal/Pharmacies";
 
 export async function getPrescriptions() {
   const res = await postWithAuth('/prescriptions/get/by/doctor', {});
@@ -14,12 +15,21 @@ export async function getPrescriptions() {
   return res.prescriptions;
 }
 
+export async function getPharmacies() {
+  const res = await postWithAuth('/pharmacies/get/all', {});
+
+  return res.pharmacies;
+}
+
 export default function DoctorPrescriptions() {
+  const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptions, setPrescriptions] = useState([]);
+  const [pharmacies, setPharmacies] = useState([]);
 
   useEffect(() => {
     (async () => {
       setPrescriptions(await getPrescriptions())
+      setPharmacies(await getPharmacies())
     })();
   }, [])
 
@@ -59,6 +69,23 @@ export default function DoctorPrescriptions() {
     setPrescriptions(await getPrescriptions())
   }
 
+  async function assignPharmacy(pharmacy_id: string) {
+    const res = await postWithAuth('/prescriptions/assign-pharmacy', {
+      pharmacy_id,
+      prescription_id: prescriptionId
+    });
+
+    setPrescriptions(await getPrescriptions())
+
+    closeModal('select-pharmacy')
+  }
+
+  function _openModal(prescription_id: string) {
+    setPrescriptionId(prescription_id);
+
+    openModal('select-pharmacy')
+  } 
+
   return (
     <DoctorMain page="prescriptions">
       <div className="container__main__title">
@@ -71,7 +98,7 @@ export default function DoctorPrescriptions() {
           <thead>
             <tr>
               <th>Patient name</th>
-              <th>Delivery address</th>
+              <th>Pharmacy</th>
               <th>Diagnosis</th>
               <th>Medicines</th>
               <th>Prescribed on</th>
@@ -82,8 +109,15 @@ export default function DoctorPrescriptions() {
               prescriptions?.map((prescription: any) => (
                 <tr key={prescription.id}>
                   <td>{prescription.full_name}</td>
-                  <td>{!prescription.addr_line_1 ? (<span>No address</span>) : <span>{prescription.addr_line_1}, {prescription.addr_line_2}, {prescription.province}</span>}</td>
-                  <td>{prescription.name}</td>
+                  <td>
+                    {!prescription.pharmacy_id ?
+                      (
+                        <span className="hover" onClick={() => _openModal(prescription.id)}>Not assigned</span>
+                      ) :
+                      <span>{prescription.name}</span>
+                    }
+                  </td>
+                  <td>{prescription._diagnosis_name}</td>
                   <td className="hover"><Link to={`/doctor/prescriptions/medicines?p=${prescription.id}`}>View</Link></td>
                   <td>{formatTime(new Date(prescription.date_created))}</td>
                 </tr>
@@ -99,6 +133,8 @@ export default function DoctorPrescriptions() {
       </div>
 
       <Prescription submitPrescription={submitPrescription}/>
+      <Pharmacies assignPharmacy={assignPharmacy} pharmacies={pharmacies} />
+
     </DoctorMain>
   )
 }

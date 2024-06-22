@@ -117,6 +117,11 @@ async function getAllByDoctor(body: any, doctor): Promise<IResponse> {
           id: "patient_id",
         },
         {
+          kind: 'left',
+          ref: "pharmacy",
+          id: "pharmacy_id",
+        },
+        {
           ref: "diagnosis",
           id: "diagnosis_id",
         },

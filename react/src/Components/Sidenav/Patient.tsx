@@ -48,6 +48,13 @@ export default function DoctorSidenav(props: any) {
         </li>
 
         <li>
+          <Link to='/patient/profile' className={`sidenav__body__item ${pageIs('profile')} flex flex--a-center`}>
+            <i className="fa-solid fa-user"></i>
+            <span>Profile</span>
+          </Link>
+        </li>
+
+        <li>
           <Link to='/patient/logout' className={`sidenav__body__item flex flex--a-center`} onClick={logout}>
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
             <span>Log out</span>

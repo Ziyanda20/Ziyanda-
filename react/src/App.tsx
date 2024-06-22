@@ -17,6 +17,7 @@ import PatientPrescriptions from "./Patient/Prescriptions"
 import PatientTracker from "./Patient/Tracker"
 import PatientDeliveries from "./Patient/Deliveries"
 import Address from "./Patient/Address"
+import Profile from "./Patient/Profile"
 
 import PharmacistDeliveries from "./Pharmacist/Deliveries"
 import PharmacistPrescriptions from "./Pharmacist/Prescriptions"
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/employee/login" element={<EmployeeSignIn />}></Route>
 
         <Route path="/login" element={<PatientSignIn />}></Route>
+        <Route path="/patient/profile" element={<Profile />}></Route>
         <Route path="/patient/address" element={<Address />}></Route>
         <Route path="/patient/deliveries" element={<PatientDeliveries/>}></Route>
         <Route path="/patient/prescriptions" element={<PatientPrescriptions />}></Route>
