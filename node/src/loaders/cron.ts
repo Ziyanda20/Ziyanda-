@@ -10,6 +10,8 @@ import { isPastDate } from "../helpers/Datetime"
 let sent = new Map()
 
 export default () => {
+  return;
+  
   schedule.scheduleJob('mail', '* * * * *', async () => {
     // loop medicien
     // loop th

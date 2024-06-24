@@ -92,6 +92,21 @@ async function getAllByHospital(body: any, admin): Promise<IResponse> {
   return this;
 }
 
+async function searchAllByHospital(body: any, admin: any): Promise<IResponse>{
+  try {
+    this.patients = await Patient.raw(`
+      SELECT * FROM patient
+      INNER JOIN admission ON admission.patient_id = patient.id AND admission.hospital_id = 1 AND admission.is_deleted = 0
+      WHERE patient.full_name LIKE '%${body.query}%'
+    `)
+
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
+
 async function authPatient(body: any): Promise<IResponse> {
   try {
     v.validate({
@@ -189,4 +204,4 @@ async function updateAddress (body: any, user: any) : Promise<IResponse>{
   return this;
 }
 
-export default { updateAddress, updatePassword, updateProfile, authPatient, removePatient, createPatient, getAllByHospital };
+export default { updateAddress, updatePassword, updateProfile, authPatient, removePatient, createPatient, searchAllByHospital, getAllByHospital };

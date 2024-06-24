@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { postWithAuth } from "../helpers/http";
+import { downloadCSV, postWithAuth } from "../helpers/http";
 import PatientMain from "./Main"
 
 export async function getDeliveries() {
@@ -10,6 +10,14 @@ export async function getDeliveries() {
 
 export default function _ () {
   const [deliveries, setDeliveries] = useState([]);
+
+  const allowed = [
+    'full_name', '_pharmacy_name','name', 'status'
+  ]
+
+  const header = [
+    '#', 'Delivery person', 'Delivery from', 'Diagnosis', 'Status'
+  ]
 
   useEffect(() => {
     (async () => {
@@ -25,7 +33,9 @@ export default function _ () {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
-        <table className="table">
+        <button onClick={() => downloadCSV('Patient Deliveries', deliveries, header, allowed)} className="btn btn--primary">Download CSV Report</button>
+
+        <table className="table margin--top-2">
           <thead>
             <tr>
               <th>Delivery person</th>
@@ -47,6 +57,8 @@ export default function _ () {
             }
           </tbody>
         </table>
+        <a id="download-link" download></a>
+
       </div>
     </PatientMain>
   )

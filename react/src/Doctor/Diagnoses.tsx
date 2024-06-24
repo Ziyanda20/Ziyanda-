@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { closeModal, openModal } from "../helpers/modals";
-import { postWithAuth } from "../helpers/http";
+import { downloadCSV, postWithAuth } from "../helpers/http";
 import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
 import { getPatients } from "../Hospital/Patients";
@@ -12,6 +12,14 @@ import Diagnoses from "../Components/Modal/Diagnoses";
 export default function DoctorDiagnoses() {
   const [patients, setPatients] = useState([]);
   const [diagnoses, setDiagnoses] = useState([]);
+
+  const allowed = [
+    'full_name', 'name', 'date_created'
+  ]
+
+  const header = [
+    '#', 'Patient', 'Diagnosis', 'Diagnosed on'
+  ]
 
   useEffect(() => {
     (async () => {
@@ -54,6 +62,14 @@ export default function DoctorDiagnoses() {
     return res.diagnoses;
   }
 
+  async function searchDiagnoses() {
+    const res = await postWithAuth('/diagnoses/search/by/doctor', {
+      query: getValueById('query')
+    })
+
+    return setDiagnoses(res.diagnoses);
+  }
+
   return (
     <DoctorMain page="diagnoses">
       <div className="container__main__title">
@@ -62,7 +78,15 @@ export default function DoctorDiagnoses() {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
-        <table className="table">
+        <div className="flex flex--a-center flex--j-space-between">
+          <div className="input">
+            <input type="text" name="" id="query" onKeyUp={() => searchDiagnoses()} placeholder="Search diagnoses" />
+          </div>
+
+          <button onClick={() => downloadCSV('Doctor Diagnoses', diagnoses, header, allowed)} className="btn btn--primary">Download CSV Report</button>
+        </div>
+
+        <table className="table margin--top-2">
           <thead>
             <tr>
               <th>Patient</th>
@@ -86,6 +110,8 @@ export default function DoctorDiagnoses() {
 
           </tbody>
         </table>
+
+        <a id="download-link" download></a>
 
         <p className="margin--top-2 hover" onClick={() => openModal('new-diagnoses')}>
           <i className="fa-solid fa-plus margin--right-1"></i>

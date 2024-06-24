@@ -11,4 +11,5 @@ export default (app: Application) => {
   app.post("/patients/add", BaseController.wrapWithUser(patientServices.createPatient));
   app.post("/patients/remove/one", BaseController.wrapWithUser(patientServices.removePatient));
   app.post("/patients/get/by/hospital", BaseController.wrapWithUser(patientServices.getAllByHospital));
+  app.post("/patients/search/by/hospital", BaseController.wrapWithUser(patientServices.searchAllByHospital));
 };

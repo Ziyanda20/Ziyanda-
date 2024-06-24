@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVERURL } from "./URL";
 import { getCookieValue } from "./cookies";
+import { getElementById } from "./dom";
 
 const session = new Map();
 
@@ -63,6 +64,23 @@ export const getLoggedInUser = async (username: string | null | undefined) => {
 
   return res.user;
 };
+
+export const downloadCSV = async (reportName: string, data: any, tableHeader: any, allowedColumns: any) => {
+  const res = await postWithAuth('/download/csv/report', {
+    reportName,
+    tableHeader,
+    allowedColumns,
+    data
+  });
+
+  if (res.successful) {
+    const anchor = getElementById('download-link')
+
+    anchor.setAttribute('href', `http://localhost:3132/assets/downloads/tmp/${res.filename}`)
+
+    anchor.click();
+  }
+}
 
 export const postWithNoAuth = async (
   url: string,

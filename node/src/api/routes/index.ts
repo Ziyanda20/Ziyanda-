@@ -9,6 +9,7 @@ import medicineRoutes from "./medicine";
 import pharmacyRoutes from "./pharmacy";
 import driverRoutes from "./driver";
 import deliveryRoutes from "./delivery";
+import reportRoutes from "./report";
 
 export default (app: Application): void => {
   pharmacyRoutes(app);
@@ -19,6 +20,6 @@ export default (app: Application): void => {
   diagnosesRoutes(app);
   prescriptionRoutes(app);
   medicineRoutes(app);
-  
   deliveryRoutes(app);
+  reportRoutes(app);
 };

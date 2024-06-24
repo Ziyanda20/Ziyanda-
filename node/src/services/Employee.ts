@@ -101,4 +101,10 @@ async function getDoctors (body: any, admin: any) : Promise<IResponse> {
   return this;
 }
 
-export default { createAdmin, createDoctor, authEmployee, getDoctors };
+async function searchDoctors (body: any, admin: any) : Promise<IResponse> {
+  this.doctors = await Employee.search({ condition: { hospital_id: admin.hospital_id, full_name: body.query, role: 'doctor' } })
+  return this;
+}
+
+
+export default { createAdmin, createDoctor, authEmployee, getDoctors, searchDoctors };

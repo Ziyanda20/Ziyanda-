@@ -4,7 +4,7 @@ import Patient from "../Components/Modal/Patient"
 
 import "./Patients.css"
 import { useEffect, useState } from "react"
-import { postWithAuth } from "../helpers/http";
+import { downloadCSV, postWithAuth } from "../helpers/http";
 import { closeModal, openModal } from "../helpers/modals";
 import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
@@ -17,14 +17,34 @@ export async function getPatients() {
   return res.patients;
 }
 
+export async function searchPatients(query: string) {
+  const res = await postWithAuth('/patients/search/by/hospital', {
+    query
+  });
+
+  return res.patients;
+}
+
 export default function DoctorPatients() {
   const [patients, setPatients] = useState([]);
+
+  const allowed = [
+    'full_name', 'id_number', 'email', 'date_created'
+  ]
+
+  const header = [
+    '#', 'Full name', 'ID Number', 'Email address', 'Date added'
+  ]
 
   useEffect(() => {
     (async () => {
       setPatients(await getPatients())
     })();
   }, [])
+
+  async function _searchPatients () {
+    setPatients(await searchPatients(getValueById('query')))
+  }
 
   async function addPatient(e: any) {
     e.preventDefault();
@@ -62,7 +82,15 @@ export default function DoctorPatients() {
       </div>
 
       <div className="container__main__pad" style={{marginTop: '4rem'}}>
-        <table className="table">
+        <div className="flex flex--a-center flex--j-space-between">
+          <div className="input">
+            <input type="text" name="" id="query" onKeyUp={() => _searchPatients()} placeholder="Search patients" />
+          </div>
+
+          <button onClick={() => downloadCSV('Hospital Patients', patients, header, allowed)} className="btn btn--primary">Download CSV Report</button>
+        </div>
+
+        <table className="table margin--top-2">
           <thead>
             <tr>
               <th>Full name</th>
@@ -89,6 +117,8 @@ export default function DoctorPatients() {
             }
           </tbody>
         </table>
+
+        <a id="download-link" download></a>
 
         <p className="margin--top-2 hover" onClick={() => openModal('new-patient')}>
           <i className="fa-solid fa-plus margin--right-1"></i>

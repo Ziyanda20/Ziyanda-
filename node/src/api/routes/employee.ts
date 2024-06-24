@@ -8,4 +8,5 @@ export default (app: Application) => {
   app.post("/employee/login", BaseController.wrap(doctorServices.authEmployee));
   app.post("/employee/register/doctor", BaseController.wrapWithUser(doctorServices.createDoctor));
   app.post("/employees/get/doctors/by/hospital", BaseController.wrapWithUser(doctorServices.getDoctors));
+  app.post("/employees/search/doctors/by/hospital", BaseController.wrapWithUser(doctorServices.searchDoctors));
 };

@@ -68,4 +68,21 @@ async function getAllDiagnosesByDoctor(body: any, doctor: any): Promise<IRespons
   return this;
 }
 
-export default { removeDiagnoses, createDiagnoses, getAllDiagnosesByDoctor };
+async function searchAllDiagnosesByDoctor(body: any, doctor: any): Promise<IResponse> {
+  try {
+    const diagnoses = await Diagnoses.raw(`
+      SELECT * FROM diagnosis
+      INNER JOIN patient ON patient.id = diagnosis.patient_id
+      WHERE diagnosis.name LIKE '%${body.query}%'
+    `)
+
+    this.diagnoses = diagnoses;
+
+    this.successful = true;
+  } catch (error) {
+    throw error;
+  }
+  return this;
+}
+
+export default { removeDiagnoses, createDiagnoses, getAllDiagnosesByDoctor, searchAllDiagnosesByDoctor };

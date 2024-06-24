@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { postWithAuth } from "../helpers/http";
+import { downloadCSV, postWithAuth } from "../helpers/http";
 import { formatTime } from "../helpers/date";
 import { Link } from "react-router-dom";
 import { getValueById } from "../helpers/dom";
@@ -18,6 +18,14 @@ export async function getDrivers() {
 
 export default function _ () {
   const [drivers, setDrivers] = useState([]) as any;
+
+  const allowed = [
+    'full_name', 'email'
+  ]
+
+  const header = [
+    '#', 'Driver name', 'Email address'
+  ]
 
   useEffect(() => {
     (async () => {
@@ -60,7 +68,9 @@ export default function _ () {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
-        <table className="table">
+        <button onClick={() => downloadCSV('Pharmacy Drivers', drivers, header, allowed)} className="btn btn--primary">Download CSV Report</button>
+
+        <table className="table margin--top-2">
           <thead>
             <tr>
               <th>Full name</th>
@@ -84,6 +94,8 @@ export default function _ () {
             }
           </tbody>
         </table>
+
+        <a id="download-link" download></a>
 
         <p className="margin--top-2 hover" onClick={() => openModal('new-driver')}>
           <i className="fa-solid fa-plus margin--right-1"></i>

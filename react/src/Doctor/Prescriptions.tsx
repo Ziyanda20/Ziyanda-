@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Prescription from "../Components/Modal/Prescription"
 import { getValueById } from "../helpers/dom";
-import { postWithAuth } from "../helpers/http";
+import { downloadCSV, postWithAuth } from "../helpers/http";
 import { closeModal, openModal } from "../helpers/modals";
 import DoctorMain from "./Main"
 import { formatTime } from "../helpers/date";
@@ -25,6 +25,14 @@ export default function DoctorPrescriptions() {
   const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptions, setPrescriptions] = useState([]);
   const [pharmacies, setPharmacies] = useState([]);
+
+  const allowed = [
+    'full_name', 'name', '_diagnosis_name', 'date_created'
+  ]
+
+  const header = [
+    '#', 'Patient', 'Pharmacy', 'Diagnosis', 'Prescribed on'
+  ]
 
   useEffect(() => {
     (async () => {
@@ -94,7 +102,9 @@ export default function DoctorPrescriptions() {
       </div>
 
       <div className="container__main__pad" style={{ marginTop: '4rem' }}>
-        <table className="table">
+        <button onClick={() => downloadCSV('Doctor Prescriptions', prescriptions, header, allowed)} className="btn btn--primary">Download CSV Report</button>
+
+        <table className="table margin--top-2">
           <thead>
             <tr>
               <th>Patient name</th>
@@ -125,6 +135,8 @@ export default function DoctorPrescriptions() {
             }
           </tbody>
         </table>
+
+        <a id="download-link" download></a>
 
         <p className="margin--top-2 hover" onClick={() => openModal('new-prescription')}>
           <i className="fa-solid fa-plus margin--right-1"></i>
