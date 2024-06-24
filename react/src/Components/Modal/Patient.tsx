@@ -20,6 +20,11 @@ export default (props: any) => {
             <label htmlFor="patient-id" className="margin--right-1"><b>Patient ID Number</b></label>
             <input type="text" id="patient-id" placeholder="Patient ID Number" />
           </div>
+
+          <div className="input flex flex--a-center">
+            <label htmlFor="patient-email" className="margin--right-1"><b>Patient email address</b></label>
+            <input type="email" id="patient-email" placeholder="Patient email address" />
+          </div>
         </div>
         <div className="modal__main__footer flex flex--a-center">
           <button className="btn btn--primary margin--right-1">Add Patient</button>

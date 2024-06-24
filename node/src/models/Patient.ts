@@ -7,6 +7,7 @@ export default new (class _Model extends SQLifier {
     this.schema('patient', {
       id: { type: 'int', isAutoIncrement: true, isPrimary: true },
       full_name: { type: 'varchar', length: 30 },
+      email: { type: 'varchar', length: 50 },
       id_number: { type: 'varchar', length: 13 },
       password: { type: 'varchar', length: 250 },
       is_deleted: { type: 'boolean', default: false },

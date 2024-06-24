@@ -32,6 +32,7 @@ export default function DoctorPatients() {
     const res = await postWithAuth('/patients/add', {
       name: getValueById('patient-name'),
       id: getValueById('patient-id'),
+      email: getValueById('patient-email')
     });
 
     if (res.successful) {
@@ -66,6 +67,7 @@ export default function DoctorPatients() {
             <tr>
               <th>Full name</th>
               <th>ID Number</th>
+              <th>Email address</th>
               <th>Added on</th>
               <th>Actions</th>
             </tr>
@@ -76,6 +78,7 @@ export default function DoctorPatients() {
                 <tr key={patient.id}>
                   <td>{patient.full_name}</td>
                   <td>{patient.id_number}</td>
+                  <td>{patient.email}</td>
                   <td>{formatTime(new Date(patient.date_created))}</td>
                   <td>
                     <span className="hover-del" onClick={() => removePatient(patient.id)}>Remove</span>

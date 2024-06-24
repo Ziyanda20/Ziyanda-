@@ -13,3 +13,10 @@ export function getDayDifference(date: Date) {
 
   return days;
 }
+
+export const isPastDate = (date: Date) => {
+  const now = (new Date()).getTime();
+
+  // Calculate the difference in milliseconds
+  return now > date.getTime()
+}

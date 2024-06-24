@@ -12,10 +12,11 @@ import { IAny, IResponse } from "../interfaces";
 
 async function createPatient(body: any, admin): Promise<IResponse> {
   try {
-    const { name, id } = body;
+    const { name, id, email } = body;
 
     v.validate({
       'Full name': { value: name, min: 5, max: 50 },
+      'Email address': { value: email, min: 5, max: 50 },
       'ID': { value: id },
     });
 
@@ -40,6 +41,7 @@ async function createPatient(body: any, admin): Promise<IResponse> {
 
     patient = patient ? patient : await Patient.insert({
       full_name: name,
+      email,
       id_number: id,
       password: await hasher.hash('Password123'),
     });

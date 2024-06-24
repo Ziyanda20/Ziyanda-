@@ -4,8 +4,11 @@ import Medicine from "../models/Medicine";
 import DosageTracker from "../models/DosageTracker";
 import Delivery from "../models/Delivery";
 import DeliveryLines from "../models/DeliveryLine";
+import Patient from "../models/Patient";
+import Pharmacy from "../models/Pharmacy";
 import { getDayDifference } from "../helpers/Datetime";
 
+import Mailer from "../helpers/Mailer";
 import v from "../helpers/Validation";
 
 import { IAny, IResponse } from "../interfaces";
@@ -267,6 +270,17 @@ async function assignPharmacy(body: any): Promise<IResponse> {
 
     prescription.save();
 
+    const patient = await Patient.findOne({ condition: { id: prescription.patient_id } })
+
+    const pharmacy = await Pharmacy.findOne({ condition: { id: prescription.pharmacy_id } });
+
+    Mailer.send({
+      to: patient.email,
+      from: 'Siye Team <support@siyeth.xyz>',
+      subject: 'Your will be dispatched from ' + pharmacy.name,
+      message: 'Your will be dispatched from ' + pharmacy.name
+    })
+
     this.successful = true;
   } catch (error) {
     throw error;
@@ -306,6 +320,15 @@ async function dispatchDelivery(body, pharmacist) {
         Medicine_id: medicine_lines[index].id,
       });
     }
+
+    const patient = await Patient.findOne({ condition: { id: prescription.patient_id } })
+
+    Mailer.send({
+      to: patient.email,
+      from: 'Siye Team <support@siyeth.xyz>',
+      subject: 'Your medicine is on the way',
+      message: 'Your driver is on the way with your medicine'
+    })
 
     this.successful = true;
   } catch (error) {

@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { getUserBySession, postWithAuth, rememberUser } from "../helpers/http";
 import PatientMain from "./Main"
 import { getValueById } from "../helpers/dom";
-
+import { Popup } from "../Components/Popup";
 
 export default function _() {
   const [address, setAddress] = useState(null) as any;
+  const [popupMsg, setPopupMsg] = useState('');
 
   const getAddr = (user: any) => {
     return {
@@ -26,15 +27,22 @@ export default function _() {
   async function updateAddress(e: any) {
     e.preventDefault();
 
-    let user = await postWithAuth('/patient/update/address', {
+    let res = await postWithAuth('/patient/update/address', {
       line_1: getValueById('line-1'),
       line_2: getValueById('line-2'),
       province: getValueById('province')
     }, true);
 
-    rememberUser(user);
+    
+    if (res.successful) {
+      rememberUser(res.user);
+      setPopupMsg('Address updated successfully');
+      setAddress(getAddr(res.user))
+    }
+  }
 
-    setAddress(getAddr(user))
+  function clearPopup() {
+    setPopupMsg('');
   }
 
   return (
@@ -61,6 +69,11 @@ export default function _() {
           <button className="btn btn--primary margin--top-2">Update address</button>
         </form>
       </div>
+      {popupMsg && (
+        <Popup clearPopup={clearPopup}>
+          {popupMsg}
+        </Popup>
+      )}
     </PatientMain>
   )
 }
