@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { downloadCSV, postWithAuth } from "../helpers/http";
 import { formatTime } from "../helpers/date";
-import { Link } from "react-router-dom";
 import PharmacyMain from "./Main"
 
 export async function getDeliveries() {

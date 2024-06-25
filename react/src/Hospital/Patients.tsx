@@ -9,7 +9,6 @@ import { closeModal, openModal } from "../helpers/modals";
 import { getValueById } from "../helpers/dom";
 import { formatTime } from "../helpers/date";
 import { showError } from "../helpers/error";
-import { Link } from "react-router-dom";
 
 export async function getPatients() {
   const res = await postWithAuth('/patients/get/by/hospital', {});

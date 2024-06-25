@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { clearUser, postWithNoAuth } from "../helpers/http";
 import { getValueById } from "../helpers/dom";
 import { id } from "../helpers/string";

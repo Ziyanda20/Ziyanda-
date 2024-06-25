@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { postWithAuth } from "../helpers/http";
 import DriverMain from "./Main"
-import { formatTime } from "../helpers/date";
 
 export async function getDeliveries() {
   const res = await postWithAuth('/deliveries/get/by/pharmacy', {});

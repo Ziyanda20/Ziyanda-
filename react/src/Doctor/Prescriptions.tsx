@@ -61,24 +61,24 @@ export default function DoctorPrescriptions() {
     showError('prescription', res.error)
   }
 
-  async function removePrescription(prescription_id: string) {
-    await postWithAuth('/prescriptions/remove/one', {
-      prescription_id
-    })
+  // async function removePrescription(prescription_id: string) {
+  //   await postWithAuth('/prescriptions/remove/one', {
+  //     prescription_id
+  //   })
 
-    setPrescriptions(await getPrescriptions())
-  }
+  //   setPrescriptions(await getPrescriptions())
+  // }
 
-  async function makeReady(prescriptionId: string) {
-    await postWithAuth('/prescriptions/make-ready', {
-      prescriptionId
-    })
+  // async function makeReady(prescriptionId: string) {
+  //   await postWithAuth('/prescriptions/make-ready', {
+  //     prescriptionId
+  //   })
 
-    setPrescriptions(await getPrescriptions())
-  }
+  //   setPrescriptions(await getPrescriptions())
+  // }
 
   async function assignPharmacy(pharmacy_id: string) {
-    const res = await postWithAuth('/prescriptions/assign-pharmacy', {
+    await postWithAuth('/prescriptions/assign-pharmacy', {
       pharmacy_id,
       prescription_id: prescriptionId
     });

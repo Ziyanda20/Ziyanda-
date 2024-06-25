@@ -27,13 +27,13 @@ export default function DoctorPrescriptions() {
     })();
   }, [])
 
-  async function setAddress(prescriptionId: string) {
-    await postWithAuth('/prescription/add/delivery-address', {
-      prescriptionId
-    });
+  // async function setAddress(prescriptionId: string) {
+  //   await postWithAuth('/prescription/add/delivery-address', {
+  //     prescriptionId
+  //   });
 
-    setPrescriptions(await getPrescriptions())
-  }
+  //   setPrescriptions(await getPrescriptions())
+  // }
 
   return (
     <PatientMain page="prescriptions">

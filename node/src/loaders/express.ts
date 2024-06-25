@@ -15,15 +15,39 @@ export default async (app: Application) => {
 
     app.use(express.static(path.join(__dirname, '../../../react/dist')));
 
-    if (process.env.NODE_ENV == "production") {
+    if (true) {
+        app.use(express.static(path.join(__dirname, '../../../react/dist')));
+
         const routes = [
+            "/hospital/doctors",
+            "/hospital/patients",
+
             "/doctor/diagnoses",
             "/doctor/prescriptions",
             "/doctor/prescriptions/medicines",
-            "/doctor/patients",
-            "/doctor/register",
-            "/doctor/login"
-        ];
+
+            "/hospital/register",
+            "/employee/login",
+
+            "/login",
+            "/patient/profile",
+            "/patient/address",
+            "/patient/deliveries" ,
+            "/patient/prescriptions",
+            "/patient/prescriptions/medicines",
+            "/patient/prescriptions/medicines/tracker",
+
+            "/pharmacy/register",
+            "/pharmacy/login",
+            "/pharmacy/deliveries",
+            "/pharmacy/prescriptions",
+            "/pharmacy/prescriptions/medicines",
+            "/pharmacy/drivers",
+
+            "/driver/login",
+            "/driver/deliveries",
+
+        ]
 
         app.get(routes, function (_, res) {
             res.sendFile(path.join(__dirname, '../../../react/dist', 'index.html'));

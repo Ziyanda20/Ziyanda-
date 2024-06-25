@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { downloadCSV, postWithAuth } from "../helpers/http";
 import { formatTime } from "../helpers/date";
-import { Link } from "react-router-dom";
 import { getValueById } from "../helpers/dom";
 import { closeModal, openModal } from "../helpers/modals";
 import { showError } from "../helpers/error";

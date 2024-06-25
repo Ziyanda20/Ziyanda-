@@ -34,7 +34,7 @@ export default function PatientTrackers() {
   }, [])
 
   async function take (id: string) {
-    const res = await postWithAuth('/prescriptions/trackers/take-pill', {
+    await postWithAuth('/prescriptions/trackers/take-pill', {
       id
     });
 
